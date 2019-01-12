@@ -50,6 +50,7 @@ def numericalize_feature(feature,protocol_type,service,flag):
     protocol_type_count = len(protocol_type)
     service_count = len(service)
     flag_count = len(flag)
+
     second_index = int(protocol_type_count+1)
     third_index = int(protocol_type_count+service_count+1)
     forth_index = int(protocol_type_count+service_count+flag_count+1)
@@ -70,6 +71,18 @@ def numericalize_feature(feature,protocol_type,service,flag):
 
     return array(feature)
 
+def numericalize_result(reslut,attack):
+
+    second_index = int(len(attack))
+    # index 0 is attack
+    reslut[0:0] = attack[reslut[0]]
+    reslut.pop(second_index)
+    # make all values float64
+    reslut = [float64(x) for x in reslut]
+
+    return array(reslut)
+
+
 def normalize_value(value, min, max):
     value = float64(value)
     min = float64(min)
@@ -84,26 +97,39 @@ train_data = read_file_lines('KDDTrain+.txt')
 test_data = read_file_lines('KDDTest+.txt')
 
 # create arrays of arrays from lines
-normalized_train_data_features = [extract_features(x) for x in train_data]
-normalized_test_data_features = [extract_features(x) for x in test_data]
+raw_train_data_features = [extract_features(x) for x in train_data]
+raw_test_data_features = [extract_features(x) for x in test_data]
 
 # train data: put index 0 to 40 in data, 41 and 42 into result (we don't need 41,42 for now)
-normalized_train_data_results = [x[41:43] for x in normalized_train_data_features]
-normalized_train_data_features = [x[0:41] for x in normalized_train_data_features]
+raw_train_data_results = [x[41:43] for x in raw_train_data_features]
+raw_train_data_features = [x[0:41] for x in raw_train_data_features]
 
 # test data: put index 0 to 40 in data, 41 and 42 into result (we don't need 41,42 for now)
-normalized_test_data_results = [x[41:43] for x in normalized_test_data_features]
-normalized_test_data_features = [x[0:41] for x in normalized_test_data_features]
+raw_test_data_results = [x[41:43] for x in raw_test_data_features]
+raw_test_data_features = [x[0:41] for x in raw_test_data_features]
 
 # stage 1 : numericalization --> index 1, 2 and 3 of dataset
 # 1.1 extract all protocol_types, services and flags
 protocol_type = dict()
 service = dict()
 flag = dict()
-for entry in normalized_train_data_features:
+attack = dict()
+
+for entry in raw_train_data_features:
     protocol_type[entry[1]] = ""
     service[entry[2]] = ""
     flag[entry[3]] = ""
+
+for entry in raw_test_data_features:
+    protocol_type[entry[1]] = ""
+    service[entry[2]] = ""
+    flag[entry[3]] = ""
+
+for entry in raw_train_data_results:
+    attack[entry[0]] = ""
+
+for entry in raw_test_data_results:
+    attack[entry[0]] = ""
 
 keys= list(protocol_type.keys())
 for i in range(0,len(keys)):
@@ -117,31 +143,57 @@ keys= list(flag.keys())
 for i in range(0,len(keys)):
     flag[keys[i]] = [int(d) for d in str(bin(i)[2:].zfill(len(flag)))]
 
+
+keys= list(attack.keys())
+for i in range(0,len(keys)):
+    attack[keys[i]] = [int(d) for d in str(bin(i)[2:].zfill(len(attack)))]
+
 # train data
-normalized_train_data_features = [numericalize_feature(x,protocol_type,service,flag) for x in normalized_train_data_features]
-normalized_train_data_features = array(normalized_train_data_features)
+numericalized_train_data_features = [numericalize_feature(x,protocol_type,service,flag) for x in raw_train_data_features]
+normalized_train_data_features = array(numericalized_train_data_features)
+
+numericalized_train_data_results = [numericalize_result(x,attack) for x in raw_train_data_results]
+normalized_train_data_results = array(numericalized_train_data_results)
 
 # test data
-normalized_test_data_features = [numericalize_feature(x,protocol_type,service,flag) for x in normalized_test_data_features]
-normalized_test_data_features = array(normalized_test_data_features)
+numericalized_test_data_features = [numericalize_feature(x,protocol_type,service,flag) for x in raw_test_data_features]
+normalized_test_data_features = array(numericalized_test_data_features)
+
+numericalized_test_data_results = [numericalize_result(x,attack) for x in raw_test_data_results]
+normalized_test_data_results = array(numericalized_test_data_results)
 
 # stage 2: normalization --> x = (x - MIN) / (MAX - MIN) --> based on columns
 
 # train data
-ymin_train = amin(normalized_train_data_features,axis=0)
-ymax_train = amax(normalized_train_data_features,axis=0)
+ymin_train = amin(numericalized_train_data_features,axis=0)
+ymax_train = amax(numericalized_train_data_features,axis=0)
+
+ymin_train_result = amin(numericalized_train_data_features,axis=0)
+ymax_train_result  = amax(numericalized_train_data_features,axis=0)
 
 # test data
-ymin_test = amin(normalized_test_data_features,axis=0)
-ymax_test = amax(normalized_test_data_features,axis=0)
+ymin_test = amin(numericalized_test_data_features,axis=0)
+ymax_test = amax(numericalized_test_data_features,axis=0)
 
+ymin_test_result = amin(numericalized_test_data_features,axis=0)
+ymax_test_result = amax(numericalized_test_data_features,axis=0)
+
+# normalize train
 for x in range(0, normalized_train_data_features.shape[0]):
     for y in range(0, normalized_train_data_features.shape[1]):
         normalized_train_data_features[x][y] = normalize_value(normalized_train_data_features[x][y],ymin_train[y],ymax_train[y])
 
+for x in range(0, normalized_train_data_results.shape[0]):
+    for y in range(0, normalized_train_data_results.shape[1]):
+        normalized_train_data_results[x][y] = normalize_value(normalized_train_data_results[x][y],ymin_train_result[y],ymax_train_result[y])
+
+# normalize test
 for x in range(0, normalized_test_data_features.shape[0]):
     for y in range(0, normalized_test_data_features.shape[1]):
         normalized_test_data_features[x][y] = normalize_value(normalized_test_data_features[x][y],ymin_test[y],ymax_test[y])
 
+for x in range(0, normalized_test_data_results.shape[0]):
+    for y in range(0, normalized_test_data_results.shape[1]):
+        normalized_test_data_results[x][y] = normalize_value(normalized_test_data_results[x][y],ymin_test_result[y],ymax_test_result[y])
 
-# print(ymin_train[0],ymax_train[0],normalized_train_data_features[23][0])
+print(normalized_train_data_features.shape)

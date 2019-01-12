@@ -70,6 +70,16 @@ def numericalize_feature(feature,protocol_type,service,flag):
 
     return array(feature)
 
+def normalize_value(value, min, max):
+    value = float64(value)
+    min = float64(min)
+    max = float64(max)
+
+    if min == float64(0) and max == float64(0):
+        return float64(0)
+    result = float64( (value - min) / (max - min) )
+    return result
+
 train_data = read_file_lines('KDDTrain+.txt')
 test_data = read_file_lines('KDDTest+.txt')
 
@@ -125,6 +135,13 @@ ymax_train = amax(normalized_train_data_features,axis=0)
 ymin_test = amin(normalized_test_data_features,axis=0)
 ymax_test = amax(normalized_test_data_features,axis=0)
 
+for x in range(0, normalized_train_data_features.shape[0]):
+    for y in range(0, normalized_train_data_features.shape[1]):
+        normalized_train_data_features[x][y] = normalize_value(normalized_train_data_features[x][y],ymin_train[y],ymax_train[y])
+
+for x in range(0, normalized_test_data_features.shape[0]):
+    for y in range(0, normalized_test_data_features.shape[1]):
+        normalized_test_data_features[x][y] = normalize_value(normalized_test_data_features[x][y],ymin_test[y],ymax_test[y])
 
 
-print('ymin[0],ymax[0]')
+# print(ymin_train[0],ymax_train[0],normalized_train_data_features[23][0])

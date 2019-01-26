@@ -81,8 +81,7 @@ class DataProccess:
 
         @classmethod
         def numericalize_result(self,reslut,attack):
-
-                second_index = int(len(attack))
+                second_index = int(1)
                 # index 0 is attack
                 reslut[0:0] = attack[reslut[0]]
                 reslut.pop(second_index)
@@ -116,11 +115,11 @@ class DataProccess:
                 raw_test_data_features = [self.extract_features(x) for x in test_data]
 
                 # train data: put index 0 to 40 in data, 41 and 42 into result (we don't need 41,42 for now)
-                raw_train_data_results = [x[41:43] for x in raw_train_data_features]
+                raw_train_data_results = [x[41:42] for x in raw_train_data_features]
                 raw_train_data_features = [x[0:41] for x in raw_train_data_features]
 
                 # test data: put index 0 to 40 in data, 41 and 42 into result (we don't need 41,42 for now)
-                raw_test_data_results = [x[41:43] for x in raw_test_data_features]
+                raw_test_data_results = [x[41:42] for x in raw_test_data_features]
                 raw_test_data_features = [x[0:41] for x in raw_test_data_features]
 
                 # stage 1 : numericalization --> index 1, 2 and 3 of dataset
@@ -161,7 +160,7 @@ class DataProccess:
 
                 keys= list(attack.keys())
                 for i in range(0,len(keys)):
-                        attack[keys[i]] = [int(d) for d in str(bin(i)[2:].zfill(len(attack)))]
+                        attack[keys[i]] = [int(i)]
 
                 # train data
                 numericalized_train_data_features = [self.numericalize_feature(x,protocol_type,service,flag) for x in raw_train_data_features]
@@ -212,4 +211,3 @@ class DataProccess:
                                 normalized_test_data_results[x][y] = self.normalize_value(normalized_test_data_results[x][y],ymin_test_result[y],ymax_test_result[y])
                 
                 return [normalized_train_data_features,normalized_train_data_results,normalized_test_data_features,normalized_test_data_results]
-        

@@ -24,7 +24,8 @@ model.add(GRU(16, return_sequences=False))
 model.add(Dropout(0.1))
 
 # binary
-model.add(Dense(1,activation='hard_sigmoid'))
+model.add(Dense(1))
+model.add(Activation('sigmoid'))
 
 # multiclass
 # model.add(Dense(5, activation='softmax'))
@@ -42,7 +43,7 @@ model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=10, batch_s
 # save the model
 # model.save("/model.hdf5")
 
-loss, accuracy = model.evaluate(x_test, y_test)
+loss, accuracy = model.evaluate(x_test, y_test, batch_size=128)
 
 print("\nLoss: %.2f, Accuracy: %.2f%%" % (loss, accuracy*100))
 y_pred = model.predict_classes(x_test)

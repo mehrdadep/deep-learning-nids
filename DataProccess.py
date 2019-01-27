@@ -109,10 +109,12 @@ class DataProccess:
                 """
                 train_data = self.read_file_lines('KDDTrain+.txt')
                 test_data = self.read_file_lines('KDDTest+.txt')
+                test_21_data = self.read_file_lines('KDDTest-21.txt')
 
                 # create arrays of arrays from lines
                 raw_train_data_features = [self.extract_features(x) for x in train_data]
                 raw_test_data_features = [self.extract_features(x) for x in test_data]
+                raw_test_21_data_features = [self.extract_features(x) for x in test_21_data]
 
                 # train data: put index 0 to 40 in data, 41 and 42 into result (we don't need 41,42 for now)
                 raw_train_data_results = [x[41:42] for x in raw_train_data_features]
@@ -121,6 +123,9 @@ class DataProccess:
                 # test data: put index 0 to 40 in data, 41 and 42 into result (we don't need 41,42 for now)
                 raw_test_data_results = [x[41:42] for x in raw_test_data_features]
                 raw_test_data_features = [x[0:41] for x in raw_test_data_features]
+
+                raw_test_21_data_results = [x[41:42] for x in raw_test_21_data_features]
+                raw_test_21_data_features = [x[0:41] for x in raw_test_21_data_features]
 
                 # stage 1 : numericalization --> index 1, 2 and 3 of dataset
                 # 1.1 extract all protocol_types, services and flags
@@ -139,15 +144,13 @@ class DataProccess:
                 'mailbomb': 'DoS',
                 'apache2': 'DoS',
                 'processtable': 'DoS',
-                'udpstorm': 'DoS',
-                
+                'udpstorm': 'DoS',        
                 'ipsweep': 'Probe',
                 'nmap': 'Probe',
                 'portsweep': 'Probe',
                 'satan': 'Probe',
                 'mscan': 'Probe',
                 'saint': 'Probe',
-
                 'ftp_write': 'R2L',
                 'guess_passwd': 'R2L',
                 'imap': 'R2L',
@@ -162,8 +165,7 @@ class DataProccess:
                 'snmpguess': 'R2L',
                 'xlock': 'R2L',
                 'xsnoop': 'R2L',
-                'worm': 'R2L',
-                
+                'worm': 'R2L',        
                 'buffer_overflow': 'U2R',
                 'loadmodule': 'U2R',
                 'perl': 'U2R',
@@ -220,6 +222,13 @@ class DataProccess:
                 numericalized_test_data_results = [self.numericalize_result(x,attack,attack_dict) for x in raw_test_data_results]
                 normalized_test_data_results = array(numericalized_test_data_results)
 
+                # test 21 data
+                numericalized_test_21_data_features = [self.numericalize_feature(x,protocol_type,service,flag) for x in raw_test_21_data_features]
+                normalized_test_21_data_features = array(numericalized_test_21_data_features)
+
+                numericalized_test_21_data_results = [self.numericalize_result(x,attack,attack_dict) for x in raw_test_21_data_results]
+                normalized_test_21_data_results = array(numericalized_test_21_data_results)
+
                 # stage 2: normalization --> x = (x - MIN) / (MAX - MIN) --> based on columns
 
                 # train data
@@ -230,6 +239,10 @@ class DataProccess:
                 ymin_test = amin(numericalized_test_data_features,axis=0)
                 ymax_test = amax(numericalized_test_data_features,axis=0)
 
+                # test 21 data
+                ymin_test_21 = amin(numericalized_test_21_data_features,axis=0)
+                ymax_test_21 = amax(numericalized_test_21_data_features,axis=0)
+
                 # normalize train
                 for x in range(0, normalized_train_data_features.shape[0]):
                         for y in range(0, normalized_train_data_features.shape[1]):
@@ -239,9 +252,14 @@ class DataProccess:
                 for x in range(0, normalized_test_data_features.shape[0]):
                         for y in range(0, normalized_test_data_features.shape[1]):
                                 normalized_test_data_features[x][y] = self.normalize_value(normalized_test_data_features[x][y],ymin_test[y],ymax_test[y])
+                
+                # normalize test 21
+                for x in range(0, normalized_test_21_data_features.shape[0]):
+                        for y in range(0, normalized_test_21_data_features.shape[1]):
+                                normalized_test_21_data_features[x][y] = self.normalize_value(normalized_test_21_data_features[x][y],ymin_test_21[y],ymax_test_21[y])
 
-                return [normalized_train_data_features,normalized_train_data_results,normalized_test_data_features,normalized_test_data_results]
-
+                return [normalized_train_data_features,normalized_train_data_results,normalized_test_data_features,normalized_test_data_results,normalized_test_21_data_features,normalized_test_21_data_results]
+        
         @classmethod
         def return_proccessed_data_binary(self):
                 """
@@ -250,10 +268,13 @@ class DataProccess:
                 """
                 train_data = self.read_file_lines('KDDTrain+.txt')
                 test_data = self.read_file_lines('KDDTest+.txt')
+                test_21_data = self.read_file_lines('KDDTest-21.txt')
 
                 # create arrays of arrays from lines
                 raw_train_data_features = [self.extract_features(x) for x in train_data]
                 raw_test_data_features = [self.extract_features(x) for x in test_data]
+                raw_test_21_data_features = [self.extract_features(x) for x in test_21_data]
+
 
                 # train data: put index 0 to 40 in data, 41 and 42 into result (we don't need 41,42 for now)
                 raw_train_data_results = [x[41:42] for x in raw_train_data_features]
@@ -262,6 +283,9 @@ class DataProccess:
                 # test data: put index 0 to 40 in data, 41 and 42 into result (we don't need 41,42 for now)
                 raw_test_data_results = [x[41:42] for x in raw_test_data_features]
                 raw_test_data_features = [x[0:41] for x in raw_test_data_features]
+
+                raw_test_21_data_results = [x[41:42] for x in raw_test_21_data_features]
+                raw_test_21_data_features = [x[0:41] for x in raw_test_21_data_features]
 
                 # stage 1 : numericalization --> index 1, 2 and 3 of dataset
                 # 1.1 extract all protocol_types, services and flags
@@ -280,15 +304,13 @@ class DataProccess:
                 'mailbomb': 'abnormal',
                 'apache2': 'abnormal',
                 'processtable': 'abnormal',
-                'udpstorm': 'abnormal',
-                
+                'udpstorm': 'abnormal',     
                 'ipsweep': 'abnormal',
                 'nmap': 'abnormal',
                 'portsweep': 'abnormal',
                 'satan': 'abnormal',
                 'mscan': 'abnormal',
                 'saint': 'abnormal',
-
                 'ftp_write': 'abnormal',
                 'guess_passwd': 'abnormal',
                 'imap': 'abnormal',
@@ -304,7 +326,6 @@ class DataProccess:
                 'xlock': 'abnormal',
                 'xsnoop': 'abnormal',
                 'worm': 'abnormal',
-                
                 'buffer_overflow': 'abnormal',
                 'loadmodule': 'abnormal',
                 'perl': 'abnormal',
@@ -361,6 +382,13 @@ class DataProccess:
                 numericalized_test_data_results = [self.numericalize_result(x,attack,attack_dict) for x in raw_test_data_results]
                 normalized_test_data_results = array(numericalized_test_data_results)
 
+                # test 21 data
+                numericalized_test_21_data_features = [self.numericalize_feature(x,protocol_type,service,flag) for x in raw_test_21_data_features]
+                normalized_test_21_data_features = array(numericalized_test_21_data_features)
+
+                numericalized_test_21_data_results = [self.numericalize_result(x,attack,attack_dict) for x in raw_test_21_data_results]
+                normalized_test_21_data_results = array(numericalized_test_21_data_results)
+
                 # stage 2: normalization --> x = (x - MIN) / (MAX - MIN) --> based on columns
 
                 # train data
@@ -371,6 +399,10 @@ class DataProccess:
                 ymin_test = amin(numericalized_test_data_features,axis=0)
                 ymax_test = amax(numericalized_test_data_features,axis=0)
 
+                # test 21 data
+                ymin_test_21 = amin(numericalized_test_21_data_features,axis=0)
+                ymax_test_21 = amax(numericalized_test_21_data_features,axis=0)
+
                 # normalize train
                 for x in range(0, normalized_train_data_features.shape[0]):
                         for y in range(0, normalized_train_data_features.shape[1]):
@@ -380,5 +412,10 @@ class DataProccess:
                 for x in range(0, normalized_test_data_features.shape[0]):
                         for y in range(0, normalized_test_data_features.shape[1]):
                                 normalized_test_data_features[x][y] = self.normalize_value(normalized_test_data_features[x][y],ymin_test[y],ymax_test[y])
+                
+                # normalize test 21
+                for x in range(0, normalized_test_21_data_features.shape[0]):
+                        for y in range(0, normalized_test_21_data_features.shape[1]):
+                                normalized_test_21_data_features[x][y] = self.normalize_value(normalized_test_21_data_features[x][y],ymin_test_21[y],ymax_test_21[y])
 
-                return [normalized_train_data_features,normalized_train_data_results,normalized_test_data_features,normalized_test_data_results]
+                return [normalized_train_data_features,normalized_train_data_results,normalized_test_data_features,normalized_test_data_results,normalized_test_21_data_features,normalized_test_21_data_results]

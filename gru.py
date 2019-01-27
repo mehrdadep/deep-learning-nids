@@ -25,10 +25,13 @@ x_test_21 = x_test_21.reshape(x_test_21.shape[0], 1, x_test_21.shape[1])
 
 
 model = Sequential()
-model.add(GRU(80, input_shape = (x_train.shape[1],x_train.shape[2]), return_sequences=True))
+model.add(GRU(120, input_shape = (x_train.shape[1],x_train.shape[2]), return_sequences=True))
 model.add(Dropout(0.05))
 
-model.add(GRU(80, return_sequences=False))
+model.add(GRU(120, return_sequences=True))
+model.add(Dropout(0.05))
+
+model.add(GRU(120, return_sequences=False))
 model.add(Dropout(0.05))
 
 # binary
@@ -42,7 +45,7 @@ model.add(Activation('hard_sigmoid'))
 model.summary()
 
 # optimizer
-adam = Adam(lr=0.1)
+adam = Adam(lr=0.005)
 
 #binary
 model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])

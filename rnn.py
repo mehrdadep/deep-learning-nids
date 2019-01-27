@@ -25,13 +25,13 @@ x_test_21 = x_test_21.reshape(x_test_21.shape[0], 1, x_test_21.shape[1])
 
 model = Sequential()
 model.add(SimpleRNN(80, input_shape = (x_train.shape[1],x_train.shape[2]), return_sequences=True))
-model.add(Dropout(0.05))
+model.add(Dropout(0.2))
 
 model.add(SimpleRNN(80, return_sequences=True))
-model.add(Dropout(0.05))
+model.add(Dropout(0.2))
 
 model.add(SimpleRNN(80, return_sequences=False))
-model.add(Dropout(0.05))
+model.add(Dropout(0.2))
 
 # binary
 model.add(Dense(1))
@@ -44,7 +44,7 @@ model.add(Activation('sigmoid'))
 model.summary()
 
 # optimizer
-adam = Adam(lr=0.05)
+adam = Adam(lr=0.1)
 
 #binary
 model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])

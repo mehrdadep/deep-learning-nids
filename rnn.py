@@ -1,7 +1,7 @@
 from DataProccess import DataProccess
 from keras.optimizers import Adam
 from keras.models import Sequential, Model
-from keras.layers import Dense, Activation, Embedding, Input, Dropout, GRU, Flatten,SimpleRNN
+from keras.layers import Dense, Activation, Dropout,SimpleRNN
 import keras 
 import numpy as np
 from keras.utils import np_utils

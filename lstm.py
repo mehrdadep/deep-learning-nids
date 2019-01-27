@@ -1,7 +1,7 @@
 from DataProccess import DataProccess
 from keras.optimizers import Adam
 from keras.models import Sequential, Model
-from keras.layers import Dense, Activation, Dropout, GRU
+from keras.layers import Dense, Activation, Dropout, LSTM
 import keras 
 import numpy as np
 from keras.utils import np_utils
@@ -22,10 +22,10 @@ x_test = x_test.reshape(x_test.shape[0], 1, x_test.shape[1])
 # y_test=np_utils.to_categorical(y_test)
 
 model = Sequential()
-model.add(GRU(80, input_shape = (x_train.shape[1],x_train.shape[2]), return_sequences=True))
+model.add(LSTM(80, input_shape = (x_train.shape[1],x_train.shape[2]), return_sequences=True))
 model.add(Dropout(0.05))
 
-model.add(GRU(80, return_sequences=False))
+model.add(LSTM(80, return_sequences=False))
 model.add(Dropout(0.05))
 
 # binary

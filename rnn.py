@@ -23,16 +23,10 @@ x_test = x_test.reshape(x_test.shape[0], 1, x_test.shape[1])
 
 model = Sequential()
 model.add(SimpleRNN(80, input_shape = (x_train.shape[1],x_train.shape[2]), return_sequences=True))
-model.add(Dropout(0.1))
-
-model.add(SimpleRNN(80, return_sequences=True))
-model.add(Dropout(0.1))
-
-model.add(SimpleRNN(80, return_sequences=True))
-model.add(Dropout(0.1))
+model.add(Dropout(0.05))
 
 model.add(SimpleRNN(80, return_sequences=False))
-model.add(Dropout(0.1))
+model.add(Dropout(0.05))
 
 # binary
 model.add(Dense(1))
@@ -56,7 +50,7 @@ model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy
 model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=100, batch_size=32)
 
 # save the model
-# model.save("model.hdf5")
+model.save("model.hdf5")
 
 loss, accuracy = model.evaluate(x_test, y_test, batch_size=32)
 

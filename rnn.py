@@ -10,7 +10,6 @@ from keras.utils import np_utils
 # get and proccess data
 data = DataProccess()
 # x_train, y_train, x_test, y_test = data.return_proccessed_data_multiclass()
-
 x_train, y_train, x_test, y_test = data.return_proccessed_data_binary()
 
 
@@ -18,6 +17,7 @@ x_train, y_train, x_test, y_test = data.return_proccessed_data_binary()
 x_train = x_train.reshape(x_train.shape[0], 1, x_train.shape[1])
 x_test = x_test.reshape(x_test.shape[0], 1, x_test.shape[1])
 
+# multiclass
 # y_train=np_utils.to_categorical(y_train)
 # y_test=np_utils.to_categorical(y_test)
 
@@ -48,20 +48,20 @@ model.summary()
 adam = Adam(lr=0.1)
 
 #binary
-model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy','binary_accuracy'])
+model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])
 
 #multiclass
-# model.compile(optimizer = adam, loss = 'categorical_crossentropy', metrics=['accuracy','categorical_accuracy'])
+# model.compile(optimizer = adam, loss = 'categorical_crossentropy', metrics=['accuracy'])
 
-model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=10, batch_size=32)
+model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=100, batch_size=32)
 
 # save the model
-# model.save("/model.hdf5")
+# model.save("model.hdf5")
 
 loss, accuracy = model.evaluate(x_test, y_test, batch_size=32)
 
 print("\nLoss: %.2f, Accuracy: %.2f%%" % (loss, accuracy*100))
 y_pred = model.predict_classes(x_test)
 
-print(y_pred)
-# np.savetxt('predict.txt', np.transpose([y_test,y_pred]), fmt='%01d')
+print("\nAnomaly in Test: ",np.count_nonzero(y_test, axis=0))
+print("\nAnomaly in Prediction: ",np.count_nonzero(y_pred, axis=0))

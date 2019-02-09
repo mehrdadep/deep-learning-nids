@@ -27,20 +27,20 @@ x_test_21 = x_test_21.reshape(x_test_21.shape[0], 1, x_test_21.shape[1])
 start = time.time()
 
 model = Sequential()
-model.add(Conv1D(30,kernel_size=1, activation='relu', input_shape=(x_train.shape[1],x_train.shape[2])))
-model.add(Dropout(0.05))
+model.add(Conv1D(60,kernel_size=1, activation='relu', input_shape=(x_train.shape[1],x_train.shape[2])))
+model.add(Dropout(0.1))
 
-model.add(Conv1D(30,kernel_size=1, activation='relu'))
-model.add(Dropout(0.05))
+model.add(Conv1D(60,kernel_size=1, activation='relu'))
+model.add(Dropout(0.1))
 
-model.add(Conv1D(30,kernel_size=1, activation='relu'))
-model.add(Dropout(0.05))
+model.add(Conv1D(60,kernel_size=1, activation='relu'))
+model.add(Dropout(0.1))
 
 model.add(Flatten())
 
 # binary
 model.add(Dense(1))
-model.add(Activation('hard_sigmoid'))
+model.add(Activation('sigmoid'))
 
 # multiclass
 # model.add(Dense(5))
@@ -49,7 +49,7 @@ model.add(Activation('hard_sigmoid'))
 model.summary()
 
 # optimizer
-adam = Adam(lr=0.0001)
+adam = Adam(lr=0.0005)
 
 #binary
 model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])
@@ -57,7 +57,7 @@ model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy
 #multiclass
 # model.compile(optimizer = adam, loss = 'categorical_crossentropy', metrics=['accuracy'])
 
-model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=100, batch_size=32)
+model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=500, batch_size=32)
 
 # save the model
 # model.save("model.hdf5")

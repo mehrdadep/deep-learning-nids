@@ -1,7 +1,7 @@
 from DataProccess import DataProccess
 from keras.optimizers import Adam
 from keras.models import Sequential, Model
-from keras.layers import Dense, Activation, Dropout, Conv1D
+from keras.layers import Dense, Activation, Dropout, Conv1D, Flatten
 import keras 
 import numpy as np
 from keras.utils import np_utils
@@ -14,10 +14,10 @@ data = DataProccess()
 x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_proccessed_data_binary()
 
 
-# reshape input to be [samples, features, 1]
-# x_train = x_train.reshape(x_train.shape[0], x_train.shape[1],1)
-# x_test = x_test.reshape(x_test.shape[0], x_test.shape[1],1)
-# x_test_21 = x_test_21.reshape(x_test_21.shape[0], x_test_21.shape[1],1)
+# reshape input to be [samples, timesteps, features]
+x_train = x_train.reshape(x_train.shape[0], 1, x_train.shape[1])
+x_test = x_test.reshape(x_test.shape[0], 1, x_test.shape[1])
+x_test_21 = x_test_21.reshape(x_test_21.shape[0], 1, x_test_21.shape[1])
 
 # multiclass
 # y_train=np_utils.to_categorical(y_train)
@@ -27,14 +27,16 @@ x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_proccessed_
 start = time.time()
 
 model = Sequential()
-model.add(Conv1D(30,kernel_size=2, activation='relu', input_shape = (x_train[0].shape)))
+model.add(Conv1D(30,kernel_size=1, activation='relu', input_shape=(x_train.shape[1],x_train.shape[2])))
 model.add(Dropout(0.05))
 
-model.add(Conv1D(30,kernel_size=2, activation='relu'))
+model.add(Conv1D(30,kernel_size=1, activation='relu'))
 model.add(Dropout(0.05))
 
-model.add(Conv1D(30,kernel_size=2, activation='relu'))
+model.add(Conv1D(30,kernel_size=1, activation='relu'))
 model.add(Dropout(0.05))
+
+model.add(Flatten())
 
 # binary
 model.add(Dense(1))

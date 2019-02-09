@@ -10,8 +10,8 @@ from matplotlib import pyplot as plt
 
 class GAN():
     def __init__(self):
-        self.img_rows = 28
-        self.img_cols = 28
+        self.img_rows = 1
+        self.img_cols = 122
         self.channels = 1
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
 

@@ -5,12 +5,8 @@ from keras.layers import Dense, Activation, Dropout, GRU
 import keras 
 import numpy as np
 from keras.utils import np_utils
-<<<<<<< HEAD
-from sklearn.metrics import confusion_matrix
-
-=======
 import time
->>>>>>> b7bc7135a6b837afe21d2ad27d46ab363a311f94
+
 
 
 # get and proccess data

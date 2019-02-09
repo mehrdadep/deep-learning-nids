@@ -3,10 +3,6 @@ import numpy as np
 import pandas as pd
 from sklearn.kernel_approximation import RBFSampler
 from sklearn.linear_model import SGDClassifier
-<<<<<<< HEAD
-=======
-# from sklearn.cross_validation import train_test_split
->>>>>>> b7bc7135a6b837afe21d2ad27d46ab363a311f94
 from sklearn import svm
 from sklearn.metrics import classification_report
 from sklearn import metrics

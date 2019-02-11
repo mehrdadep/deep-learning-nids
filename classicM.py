@@ -1,4 +1,4 @@
-from DataProccess import DataProccess
+from DataProcess import DataProcess
 import numpy as np
 import pandas as pd
 from sklearn.kernel_approximation import RBFSampler
@@ -21,9 +21,9 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import (precision_score, recall_score,f1_score, accuracy_score,mean_squared_error,mean_absolute_error, roc_curve, classification_report,auc)
 from pandas_ml import ConfusionMatrix
 
-# get and proccess data
-data = DataProccess()
-x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_proccessed_data_multiclass()
+# get and process data
+data = DataProcess()
+x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_multiclass()
 
 # reshape input to be [samples, timesteps, features]
 # x_train = x_train.reshape(x_train.shape[0], 1, x_train.shape[1])

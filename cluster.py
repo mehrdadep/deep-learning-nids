@@ -1,10 +1,10 @@
 from sklearn.cluster import KMeans
-from DataProccess import DataProccess
+from DataProcess import DataProcess
 import numpy as np
 from sklearn import metrics
 
-data = DataProccess()
-x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_proccessed_data_multiclass()
+data = DataProcess()
+x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_multiclass()
 
 
 x = np.concatenate((x_train, x_test))

@@ -1,4 +1,4 @@
-from DataProccess import DataProccess
+from DataProcess import DataProcess
 from keras.optimizers import Adam
 from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Dropout, Conv1D, Flatten
@@ -8,10 +8,10 @@ from keras.utils import np_utils
 import time
 
 
-# get and proccess data
-data = DataProccess()
-# x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_proccessed_data_multiclass()
-x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_proccessed_data_binary()
+# get and process data
+data = DataProcess()
+# x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_multiclass()
+x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_binary()
 
 
 # reshape input to be [samples, timesteps, features]

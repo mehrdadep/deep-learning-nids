@@ -1,4 +1,4 @@
-from DataProccess import DataProccess
+from DataProcess import DataProcess
 from keras.optimizers import Adam
 from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Dropout, Conv1D,LeakyReLU,BatchNormalization,Input, Flatten

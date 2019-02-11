@@ -1,4 +1,4 @@
-from DataProccess import DataProccess
+from DataProcess import DataProcess
 from keras.optimizers import Adam
 from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Dropout, GRU
@@ -9,10 +9,10 @@ import time
 
 
 
-# get and proccess data
-data = DataProccess()
-# x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_proccessed_data_multiclass()
-x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_proccessed_data_binary()
+# get and process data
+data = DataProcess()
+x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_multiclass()
+# x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_binary()
 
 
 # reshape input to be [samples, timesteps, features]
@@ -21,9 +21,9 @@ x_test = x_test.reshape(x_test.shape[0], 1, x_test.shape[1])
 x_test_21 = x_test_21.reshape(x_test_21.shape[0], 1, x_test_21.shape[1])
 
 # multiclass
-# y_train=np_utils.to_categorical(y_train)
-# y_test=np_utils.to_categorical(y_test)
-# y_test_21=np_utils.to_categorical(y_test_21)
+y_train=np_utils.to_categorical(y_train)
+y_test=np_utils.to_categorical(y_test)
+y_test_21=np_utils.to_categorical(y_test_21)
 
 start = time.time()
 
@@ -38,12 +38,12 @@ model.add(GRU(30, return_sequences=False))
 model.add(Dropout(0.1))
 
 # binary
-model.add(Dense(1))
-model.add(Activation('hard_sigmoid'))
+# model.add(Dense(1))
+# model.add(Activation('hard_sigmoid'))
 
 # multiclass
-# model.add(Dense(5))
-# model.add(Activation('softmax'))
+model.add(Dense(5))
+model.add(Activation('softmax'))
 
 model.summary()
 
@@ -51,10 +51,10 @@ model.summary()
 adam = Adam(lr=0.0001)
 
 #binary
-model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])
+# model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])
 
 #multiclass
-# model.compile(optimizer = adam, loss = 'categorical_crossentropy', metrics=['accuracy'])
+model.compile(optimizer = adam, loss = 'categorical_crossentropy', metrics=['accuracy'])
 
 model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=50, batch_size=32)
 

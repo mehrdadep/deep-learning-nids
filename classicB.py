@@ -1,4 +1,4 @@
-from DataProccess import DataProccess
+from DataProcess import DataProcess
 import numpy as np
 import pandas as pd
 from sklearn.kernel_approximation import RBFSampler
@@ -20,9 +20,9 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import (precision_score, recall_score,f1_score, accuracy_score,mean_squared_error,mean_absolute_error, roc_curve, classification_report,auc)
 
 
-# get and proccess data
-data = DataProccess()
-x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_proccessed_data_binary()
+# get and process data
+data = DataProcess()
+x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_binary()
 
 model = LogisticRegression()
 model.fit(x_train, y_train.ravel())

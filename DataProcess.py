@@ -1,6 +1,7 @@
 import os
 import io
-from numpy import float64, array, amax, amin, savetxt, genfromtxt
+import numpy as np
+from random import shuffle
 
 
 class DataProcess:
@@ -25,7 +26,7 @@ class DataProcess:
     @classmethod
     def extract_features(self, a_line):
         """
-        extract features based on comma (,), return an array
+        extract features based on comma (,), return an np.array
         """
         return [x.strip() for x in a_line.split(',')]
 
@@ -50,10 +51,10 @@ class DataProcess:
         feature[third_index:third_index] = flag[feature[third_index]]
         feature.pop(forth_index)
 
-        # make all values float64
-        feature = [float64(x) for x in feature]
+        # make all values np.float64
+        feature = [np.float64(x) for x in feature]
 
-        return array(feature)
+        return np.array(feature)
 
     @classmethod
     def numericalize_result(self, reslut, attack, attack_dict):
@@ -61,20 +62,36 @@ class DataProcess:
         # index 0 is attack
         reslut[0:0] = attack[attack_dict[reslut[0]]]
         reslut.pop(second_index)
-        # make all values float64
-        reslut = [float64(x) for x in reslut]
+        # make all values np.float64
+        reslut = [np.float64(x) for x in reslut]
 
-        return array(reslut)
+        return np.array(reslut)
+
+    @classmethod
+    def numericalize_feature_cicids(self, feature):
+        # make all values np.float64
+        feature = [np.float64(-1) if(x == "Infinity" or x == "NaN") else np.float64(x) for x in feature]
+
+        return np.array(feature)
+
+    @classmethod
+    def numericalize_result_cicids(self, reslut, attack, attack_dict):
+        res = list()
+        res[0:0] = attack[attack_dict[reslut]]
+        # make all values np.float64
+        res = [np.float64(x) for x in res]
+
+        return np.array(res)
 
     @classmethod
     def normalize_value(self, value, min, max):
-        value = float64(value)
-        min = float64(min)
-        max = float64(max)
+        value = np.float64(value)
+        min = np.float64(min)
+        max = np.float64(max)
 
-        if min == float64(0) and max == float64(0):
-            return float64(0)
-        result = float64((value - min) / (max - min))
+        if min == np.float64(0) and max == np.float64(0):
+            return np.float64(0)
+        result = np.float64((value - min) / (max - min))
         return result
 
     @classmethod
@@ -87,7 +104,7 @@ class DataProcess:
         test_data = self.read_file_lines('nsl', 'KDDTest+.txt')
         test_21_data = self.read_file_lines('nsl', 'KDDTest-21.txt')
 
-        # create arrays of arrays from lines
+        # create np.arrays of np.arrays from lines
         raw_train_data_features = [
             self.extract_features(x) for x in train_data]
         raw_test_data_features = [self.extract_features(x) for x in test_data]
@@ -192,46 +209,46 @@ class DataProcess:
         # train data
         numericalized_train_data_features = [self.numericalize_feature(
             x, protocol_type, service, flag) for x in raw_train_data_features]
-        normalized_train_data_features = array(
+        normalized_train_data_features = np.array(
             numericalized_train_data_features)
 
         numericalized_train_data_results = [self.numericalize_result(
             x, attack, attack_dict) for x in raw_train_data_results]
-        normalized_train_data_results = array(numericalized_train_data_results)
+        normalized_train_data_results = np.array(numericalized_train_data_results)
 
         # test data
         numericalized_test_data_features = [self.numericalize_feature(
             x, protocol_type, service, flag) for x in raw_test_data_features]
-        normalized_test_data_features = array(numericalized_test_data_features)
+        normalized_test_data_features = np.array(numericalized_test_data_features)
 
         numericalized_test_data_results = [self.numericalize_result(
             x, attack, attack_dict) for x in raw_test_data_results]
-        normalized_test_data_results = array(numericalized_test_data_results)
+        normalized_test_data_results = np.array(numericalized_test_data_results)
 
         # test 21 data
         numericalized_test_21_data_features = [self.numericalize_feature(
             x, protocol_type, service, flag) for x in raw_test_21_data_features]
-        normalized_test_21_data_features = array(
+        normalized_test_21_data_features = np.array(
             numericalized_test_21_data_features)
 
         numericalized_test_21_data_results = [self.numericalize_result(
             x, attack, attack_dict) for x in raw_test_21_data_results]
-        normalized_test_21_data_results = array(
+        normalized_test_21_data_results = np.array(
             numericalized_test_21_data_results)
 
         # stage 2: normalization --> x = (x - MIN) / (MAX - MIN) --> based on columns
 
         # train data
-        ymin_train = amin(numericalized_train_data_features, axis=0)
-        ymax_train = amax(numericalized_train_data_features, axis=0)
+        ymin_train = np.amin(numericalized_train_data_features, axis=0)
+        ymax_train = np.amax(numericalized_train_data_features, axis=0)
 
         # test data
-        ymin_test = amin(numericalized_test_data_features, axis=0)
-        ymax_test = amax(numericalized_test_data_features, axis=0)
+        ymin_test = np.amin(numericalized_test_data_features, axis=0)
+        ymax_test = np.amax(numericalized_test_data_features, axis=0)
 
         # test 21 data
-        ymin_test_21 = amin(numericalized_test_21_data_features, axis=0)
-        ymax_test_21 = amax(numericalized_test_21_data_features, axis=0)
+        ymin_test_21 = np.amin(numericalized_test_21_data_features, axis=0)
+        ymax_test_21 = np.amax(numericalized_test_21_data_features, axis=0)
 
         # normalize train
         for x in range(0, normalized_train_data_features.shape[0]):
@@ -257,22 +274,22 @@ class DataProcess:
            os.makedirs(mul_nsl)
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_train_data_features.csv")
-        savetxt(filepath, normalized_train_data_features, delimiter=",")
+        np.savetxt(filepath, normalized_train_data_features, delimiter=",")
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_train_data_results.csv")
-        savetxt(filepath, normalized_train_data_results, delimiter=",")
+        np.savetxt(filepath, normalized_train_data_results, delimiter=",")
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_test_data_features.csv")
-        savetxt(filepath, normalized_test_data_features, delimiter=",")
+        np.savetxt(filepath, normalized_test_data_features, delimiter=",")
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_test_data_results.csv")
-        savetxt(filepath, normalized_test_data_results, delimiter=",")
+        np.savetxt(filepath, normalized_test_data_results, delimiter=",")
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_test_21_data_features.csv")
-        savetxt(filepath, normalized_test_21_data_features, delimiter=",")
+        np.savetxt(filepath, normalized_test_21_data_features, delimiter=",")
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_test_21_data_results.csv")
-        savetxt(filepath, normalized_test_21_data_results, delimiter=",")
+        np.savetxt(filepath, normalized_test_21_data_results, delimiter=",")
 
         return True
 
@@ -286,7 +303,7 @@ class DataProcess:
         test_data = self.read_file_lines('nsl', 'KDDTest+.txt')
         test_21_data = self.read_file_lines('nsl', 'KDDTest-21.txt')
 
-        # create arrays of arrays from lines
+        # create np.arrays of np.arrays from lines
         raw_train_data_features = [
             self.extract_features(x) for x in train_data]
         raw_test_data_features = [self.extract_features(x) for x in test_data]
@@ -391,46 +408,46 @@ class DataProcess:
         # train data
         numericalized_train_data_features = [self.numericalize_feature(
             x, protocol_type, service, flag) for x in raw_train_data_features]
-        normalized_train_data_features = array(
+        normalized_train_data_features = np.array(
             numericalized_train_data_features)
 
         numericalized_train_data_results = [self.numericalize_result(
             x, attack, attack_dict) for x in raw_train_data_results]
-        normalized_train_data_results = array(numericalized_train_data_results)
+        normalized_train_data_results = np.array(numericalized_train_data_results)
 
         # test data
         numericalized_test_data_features = [self.numericalize_feature(
             x, protocol_type, service, flag) for x in raw_test_data_features]
-        normalized_test_data_features = array(numericalized_test_data_features)
+        normalized_test_data_features = np.array(numericalized_test_data_features)
 
         numericalized_test_data_results = [self.numericalize_result(
             x, attack, attack_dict) for x in raw_test_data_results]
-        normalized_test_data_results = array(numericalized_test_data_results)
+        normalized_test_data_results = np.array(numericalized_test_data_results)
 
         # test 21 data
         numericalized_test_21_data_features = [self.numericalize_feature(
             x, protocol_type, service, flag) for x in raw_test_21_data_features]
-        normalized_test_21_data_features = array(
+        normalized_test_21_data_features = np.array(
             numericalized_test_21_data_features)
 
         numericalized_test_21_data_results = [self.numericalize_result(
             x, attack, attack_dict) for x in raw_test_21_data_results]
-        normalized_test_21_data_results = array(
+        normalized_test_21_data_results = np.array(
             numericalized_test_21_data_results)
 
         # stage 2: normalization --> x = (x - MIN) / (MAX - MIN) --> based on columns
 
         # train data
-        ymin_train = amin(numericalized_train_data_features, axis=0)
-        ymax_train = amax(numericalized_train_data_features, axis=0)
+        ymin_train = np.amin(numericalized_train_data_features, axis=0)
+        ymax_train = np.amax(numericalized_train_data_features, axis=0)
 
         # test data
-        ymin_test = amin(numericalized_test_data_features, axis=0)
-        ymax_test = amax(numericalized_test_data_features, axis=0)
+        ymin_test = np.amin(numericalized_test_data_features, axis=0)
+        ymax_test = np.amax(numericalized_test_data_features, axis=0)
 
         # test 21 data
-        ymin_test_21 = amin(numericalized_test_21_data_features, axis=0)
-        ymax_test_21 = amax(numericalized_test_21_data_features, axis=0)
+        ymin_test_21 = np.amin(numericalized_test_21_data_features, axis=0)
+        ymax_test_21 = np.amax(numericalized_test_21_data_features, axis=0)
 
         # normalize train
         for x in range(0, normalized_train_data_features.shape[0]):
@@ -455,22 +472,22 @@ class DataProcess:
            os.makedirs(bin_nsl)
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_train_data_features.csv")
-        savetxt(filepath, normalized_train_data_features, delimiter=",")
+        np.savetxt(filepath, normalized_train_data_features, delimiter=",")
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_train_data_results.csv")
-        savetxt(filepath, normalized_train_data_results, delimiter=",")
+        np.savetxt(filepath, normalized_train_data_results, delimiter=",")
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_test_data_features.csv")
-        savetxt(filepath, normalized_test_data_features, delimiter=",")
+        np.savetxt(filepath, normalized_test_data_features, delimiter=",")
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_test_data_results.csv")
-        savetxt(filepath, normalized_test_data_results, delimiter=",")
+        np.savetxt(filepath, normalized_test_data_results, delimiter=",")
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_test_21_data_features.csv")
-        savetxt(filepath, normalized_test_21_data_features, delimiter=",")
+        np.savetxt(filepath, normalized_test_21_data_features, delimiter=",")
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_test_21_data_results.csv")
-        savetxt(filepath, normalized_test_21_data_results, delimiter=",")
+        np.savetxt(filepath, normalized_test_21_data_results, delimiter=",")
 
         return True
 
@@ -482,22 +499,22 @@ class DataProcess:
             self.nsl_process_data_multiclass()
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_train_data_features.csv")
-        normalized_train_data_features = genfromtxt(filepath, delimiter=",")
+        normalized_train_data_features = np.genfromtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_train_data_results.csv")
-        normalized_train_data_results = genfromtxt(filepath, delimiter=",")
+        normalized_train_data_results = np.genfromtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_test_data_features.csv")
-        normalized_test_data_features = genfromtxt(filepath, delimiter=",")
+        normalized_test_data_features = np.genfromtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_test_data_results.csv")
-        normalized_test_data_results = genfromtxt(filepath, delimiter=",")
+        normalized_test_data_results = np.genfromtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_test_21_data_features.csv")
-        normalized_test_21_data_features = genfromtxt(filepath, delimiter=",")
+        normalized_test_21_data_features = np.genfromtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_test_21_data_results.csv")
-        normalized_test_21_data_results = genfromtxt(filepath, delimiter=",")
+        normalized_test_21_data_results = np.genfromtxt(filepath, delimiter=",")
 
         return [normalized_train_data_features, normalized_train_data_results, normalized_test_data_features, normalized_test_data_results, normalized_test_21_data_features, normalized_test_21_data_results]
 
@@ -509,21 +526,307 @@ class DataProcess:
             self.nsl_process_data_binary()
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_train_data_features.csv")
-        normalized_train_data_features = genfromtxt(filepath, delimiter=",")
+        normalized_train_data_features = np.genfromtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_train_data_results.csv")
-        normalized_train_data_results = genfromtxt(filepath, delimiter=",")
+        normalized_train_data_results = np.genfromtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_test_data_features.csv")
-        normalized_test_data_features = genfromtxt(filepath, delimiter=",")
+        normalized_test_data_features = np.genfromtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_test_data_results.csv")
-        normalized_test_data_results = genfromtxt(filepath, delimiter=",")
+        normalized_test_data_results = np.genfromtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_test_21_data_features.csv")
-        normalized_test_21_data_features = genfromtxt(filepath, delimiter=",")
+        normalized_test_21_data_features = np.genfromtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_test_21_data_results.csv")
-        normalized_test_21_data_results = genfromtxt(filepath, delimiter=",")
+        normalized_test_21_data_results = np.genfromtxt(filepath, delimiter=",")
 
         return [normalized_train_data_features, normalized_train_data_results, normalized_test_data_features, normalized_test_data_results, normalized_test_21_data_features, normalized_test_21_data_results]
+
+    @classmethod
+    def cicids_process_data_multiclass(self):
+        """
+        read from data folder and return a list
+        """
+        train_data_1 = self.read_file_lines('cicids', 'Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv')
+        train_data_1.pop(0)
+        shuffle(train_data_1)
+
+        train_data_2 = self.read_file_lines('cicids', 'Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv')
+        train_data_2.pop(0)
+        shuffle(train_data_2)
+        
+        train_data_3 = self.read_file_lines('cicids', 'Friday-WorkingHours-Morning.pcap_ISCX.csv')
+        train_data_3.pop(0)
+        shuffle(train_data_3)
+
+        train_data_4 = self.read_file_lines('cicids', 'Monday-WorkingHours.pcap_ISCX.csv')
+        train_data_4.pop(0)
+        shuffle(train_data_4)
+
+        train_data_5 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv')
+        train_data_5.pop(0) 
+        shuffle(train_data_5)
+
+        train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
+        train_data_6.pop(0) 
+        shuffle(train_data_6)
+
+        train_data_7 = self.read_file_lines('cicids', 'Tuesday-WorkingHours.pcap_ISCX.csv')
+        train_data_7.pop(0)
+        shuffle(train_data_7) 
+
+        train_data_8 = self.read_file_lines('cicids', 'Wednesday-workingHours.pcap_ISCX.csv')
+        train_data_8.pop(0)
+
+        train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
+        
+        # extract data and shuffle it
+        raw_train_data_features = [self.extract_features(x) for x in train_data]
+        shuffle(raw_train_data_features)
+
+        # train data: put index 0 to 78 in data and 79  into result
+        raw_train_data_results = [x[-1] for x in raw_train_data_features]
+        raw_train_data_features = [x[0:-1] for x in raw_train_data_features]
+
+        # stage 1 : numericalization --> index 1, 2 and 3 of dataset
+        # 1.1 extract all protocol_types, services and flags
+        attack = dict()
+        attack_dict = {
+            'BENIGN': 'BENIGN',
+            'DDoS': 'DDoS',
+            'PortScan': 'PortScan',
+            'Infiltration': 'Infiltration',
+            'Web Attack � Brute Force': 'Web Attack',
+            'Web Attack � XSS': 'Web Attack',
+            'Web Attack � Sql Injection': 'Web Attack' 
+        }
+
+        for entry in raw_train_data_results:
+            try:
+                attack[attack_dict[entry]] = ""
+            except:
+                print(entry)
+
+        keys = list(attack.keys())
+
+        for i in range(0, len(keys)):
+            attack[keys[i]] = [int(i)]
+
+        # train data
+        
+        numericalized_train_data_features = [self.numericalize_feature_cicids(x) for x in raw_train_data_features]
+        normalized_train_data_features = np.array(numericalized_train_data_features)
+
+        numericalized_train_data_results = [self.numericalize_result_cicids(x, attack, attack_dict) for x in raw_train_data_results]
+        normalized_train_data_results = np.array(numericalized_train_data_results)
+
+        # stage 2: normalization --> x = (x - MIN) / (MAX - MIN) --> based on columns
+
+        # train data
+        ymin_train = np.amin(normalized_train_data_features, axis=0)
+        ymax_train = np.amax(normalized_train_data_features, axis=0)
+
+        # normalize train
+        for x in range(0, normalized_train_data_features.shape[0]):
+            for y in range(0, normalized_train_data_features.shape[1]):
+                normalized_train_data_features[x][y] = self.normalize_value(
+                    normalized_train_data_features[x][y], ymin_train[y], ymax_train[y])
+        
+        # create test and train data
+        train_count = int((normalized_train_data_features.shape[0] * 75) / 100)
+
+        train_data_features = normalized_train_data_features[:train_count, :]
+        test_data_features = normalized_train_data_features[train_count:, :]
+
+        train_data_results = normalized_train_data_results[:train_count]
+        test_data_results = normalized_train_data_results[train_count:]
+        
+        mul_cicids = os.path.join(
+            self.get_current_working_directory(), 'data', 'mul-cicids')
+        if not os.path.exists(mul_cicids):
+           os.makedirs(mul_cicids)
+        filepath = os.path.join(
+            self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_features.csv")
+        np.savetxt(filepath, train_data_features, delimiter=",")
+        filepath = os.path.join(
+            self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_results.csv")
+        np.savetxt(filepath, train_data_results, delimiter=",")
+        filepath = os.path.join(
+            self.get_current_working_directory(), 'data', 'mul-cicids', "test_data_features.csv")
+        np.savetxt(filepath, test_data_features, delimiter=",")
+        filepath = os.path.join(
+            self.get_current_working_directory(), 'data', 'mul-cicids', "test_data_results.csv")
+        np.savetxt(filepath, test_data_results, delimiter=",")
+
+        return True
+
+    @classmethod
+    def return_processed_cicids_data_multiclass(self):
+        filepath = os.path.join(
+        self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_features.csv")
+        if(not os.path.isfile(filepath)):
+            self.cicids_process_data_multiclass()
+
+        filepath = os.path.join(
+                self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_features.csv")
+        normalized_train_data_features = np.genfromtxt(filepath, delimiter=",")
+
+        filepath = os.path.join(
+                self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_results.csv")
+        normalized_train_data_results = np.genfromtxt(filepath, delimiter=",")
+
+        filepath = os.path.join(
+                self.get_current_working_directory(), 'data', 'mul-cicids', "test_data_features.csv")
+        normalized_test_data_features = np.genfromtxt(filepath, delimiter=",")
+
+        filepath = os.path.join(
+                self.get_current_working_directory(), 'data', 'mul-cicids', "test_data_results.csv")
+        normalized_test_data_results = np.genfromtxt(filepath, delimiter=",")
+
+        return [normalized_train_data_features, normalized_train_data_results, normalized_test_data_features, normalized_test_data_results]
+    
+    @classmethod
+    def cicids_process_data_binary(self):
+        """
+        read from data folder and return a list
+        """
+        train_data_1 = self.read_file_lines('cicids', 'Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv')
+        train_data_1.pop(0)
+        shuffle(train_data_1)
+
+        train_data_2 = self.read_file_lines('cicids', 'Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv')
+        train_data_2.pop(0)
+        shuffle(train_data_2)
+        
+        train_data_3 = self.read_file_lines('cicids', 'Friday-WorkingHours-Morning.pcap_ISCX.csv')
+        train_data_3.pop(0)
+        shuffle(train_data_3)
+
+        train_data_4 = self.read_file_lines('cicids', 'Monday-WorkingHours.pcap_ISCX.csv')
+        train_data_4.pop(0)
+        shuffle(train_data_4)
+
+        train_data_5 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv')
+        train_data_5.pop(0) 
+        shuffle(train_data_5)
+
+        train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
+        train_data_6.pop(0) 
+        shuffle(train_data_6)
+
+        train_data_7 = self.read_file_lines('cicids', 'Tuesday-WorkingHours.pcap_ISCX.csv')
+        train_data_7.pop(0)
+        shuffle(train_data_7) 
+
+        train_data_8 = self.read_file_lines('cicids', 'Wednesday-workingHours.pcap_ISCX.csv')
+        train_data_8.pop(0)
+
+        train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
+        
+        # extract data and shuffle it
+        raw_train_data_features = [self.extract_features(x) for x in train_data]
+        shuffle(raw_train_data_features)
+
+        # train data: put index 0 to 78 in data and 79  into result
+        raw_train_data_results = [x[-1] for x in raw_train_data_features]
+        raw_train_data_features = [x[0:-1] for x in raw_train_data_features]
+
+        # stage 1 : numericalization --> index 1, 2 and 3 of dataset
+        # 1.1 extract all protocol_types, services and flags
+        attack = dict()
+        attack_dict = {
+            'BENIGN': 'BENIGN',
+            'DDoS': 'ATTACK',
+            'PortScan': 'ATTACK',
+            'Infiltration': 'ATTACK',
+            'Web Attack � Brute Force': 'ATTACK',
+            'Web Attack � XSS': 'ATTACK',
+            'Web Attack � Sql Injection': 'ATTACK'
+        }
+
+        for entry in raw_train_data_results:
+            try:
+                attack[attack_dict[entry]] = ""
+            except:
+                print(entry)
+
+        keys = list(attack.keys())
+
+        for i in range(0, len(keys)):
+            attack[keys[i]] = [int(i)]
+
+        # train data
+        
+        numericalized_train_data_features = [self.numericalize_feature_cicids(x) for x in raw_train_data_features]
+        normalized_train_data_features = np.array(numericalized_train_data_features)
+
+        numericalized_train_data_results = [self.numericalize_result_cicids(x, attack, attack_dict) for x in raw_train_data_results]
+        normalized_train_data_results = np.array(numericalized_train_data_results)
+
+        # stage 2: normalization --> x = (x - MIN) / (MAX - MIN) --> based on columns
+
+        # train data
+        ymin_train = np.amin(normalized_train_data_features, axis=0)
+        ymax_train = np.amax(normalized_train_data_features, axis=0)
+
+        # normalize train
+        for x in range(0, normalized_train_data_features.shape[0]):
+            for y in range(0, normalized_train_data_features.shape[1]):
+                normalized_train_data_features[x][y] = self.normalize_value(
+                    normalized_train_data_features[x][y], ymin_train[y], ymax_train[y])
+        
+        # create test and train data
+        train_count = int((normalized_train_data_features.shape[0] * 75) / 100)
+
+        train_data_features = normalized_train_data_features[:train_count, :]
+        test_data_features = normalized_train_data_features[train_count:, :]
+
+        train_data_results = normalized_train_data_results[:train_count]
+        test_data_results = normalized_train_data_results[train_count:]
+        
+        mul_cicids = os.path.join(
+            self.get_current_working_directory(), 'data', 'bin-cicids')
+        if not os.path.exists(mul_cicids):
+           os.makedirs(mul_cicids)
+        filepath = os.path.join(
+            self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_features.csv")
+        np.savetxt(filepath, train_data_features, delimiter=",")
+        filepath = os.path.join(
+            self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_results.csv")
+        np.savetxt(filepath, train_data_results, delimiter=",")
+        filepath = os.path.join(
+            self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_features.csv")
+        np.savetxt(filepath, test_data_features, delimiter=",")
+        filepath = os.path.join(
+            self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_results.csv")
+        np.savetxt(filepath, test_data_results, delimiter=",")
+
+        return True
+
+    @classmethod
+    def return_processed_cicids_data_binary(self):
+        filepath = os.path.join(
+        self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_features.csv")
+        if(not os.path.isfile(filepath)):
+            self.cicids_process_data_binary()
+
+        filepath = os.path.join(
+                self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_features.csv")
+        normalized_train_data_features = np.genfromtxt(filepath, delimiter=",")
+
+        filepath = os.path.join(
+                self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_results.csv")
+        normalized_train_data_results = np.genfromtxt(filepath, delimiter=",")
+
+        filepath = os.path.join(
+                self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_features.csv")
+        normalized_test_data_features = np.genfromtxt(filepath, delimiter=",")
+
+        filepath = os.path.join(
+                self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_results.csv")
+        normalized_test_data_results = np.genfromtxt(filepath, delimiter=",")
+
+        return [normalized_train_data_features, normalized_train_data_results, normalized_test_data_features, normalized_test_data_results]

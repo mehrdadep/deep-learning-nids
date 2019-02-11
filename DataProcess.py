@@ -734,7 +734,7 @@ class DataProcess:
         raw_train_data_results = [x[-1] for x in raw_train_data_features]
         raw_train_data_features = [x[0:-1] for x in raw_train_data_features]
 
-        # stage 1 : numericalization --> index 1, 2 and 3 of dataset
+        # stage 1 : numericalization
         # 1.1 extract all protocol_types, services and flags
         attack = dict()
         attack_dict = {

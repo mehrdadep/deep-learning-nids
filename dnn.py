@@ -9,8 +9,8 @@ from keras.utils import np_utils
 
 # get and proccess data
 data = DataProcess()
-# x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_proccessed_data_multiclass()
-x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_proccessed_data_binary()
+# x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_proccesed_data_multiclass()
+x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_binary()
 
 
 # reshape input to be [samples, timesteps, features]

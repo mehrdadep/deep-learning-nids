@@ -580,6 +580,7 @@ class DataProcess:
 
         train_data_8 = self.read_file_lines('cicids', 'Wednesday-workingHours.pcap_ISCX.csv')
         train_data_8.pop(0)
+        shuffle(train_data_8)
 
         train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
         
@@ -596,12 +597,20 @@ class DataProcess:
         attack = dict()
         attack_dict = {
             'BENIGN': 'BENIGN',
-            'DDoS': 'DDoS',
+            'DDoS': 'DoS',
             'PortScan': 'PortScan',
             'Infiltration': 'Infiltration',
             'Web Attack � Brute Force': 'Web Attack',
             'Web Attack � XSS': 'Web Attack',
-            'Web Attack � Sql Injection': 'Web Attack' 
+            'Web Attack � Sql Injection': 'Web Attack',
+            'Bot': 'Bot',
+            'FTP-Patator': 'Web Attack',
+            'SSH-Patator': 'Web Attack',
+            'DoS slowloris':'DoS',
+            'DoS Slowhttptest':'DoS',
+            'DoS Hulk':'DoS',
+            'DoS GoldenEye':'DoS',
+            'Heartbleed':'Web Attack'
         }
 
         for entry in raw_train_data_results:
@@ -723,9 +732,10 @@ class DataProcess:
 
         train_data_8 = self.read_file_lines('cicids', 'Wednesday-workingHours.pcap_ISCX.csv')
         train_data_8.pop(0)
+        shuffle(train_data_8)
 
         train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
-        
+
         # extract data and shuffle it
         raw_train_data_features = [self.extract_features(x) for x in train_data]
         shuffle(raw_train_data_features)
@@ -744,7 +754,15 @@ class DataProcess:
             'Infiltration': 'ATTACK',
             'Web Attack � Brute Force': 'ATTACK',
             'Web Attack � XSS': 'ATTACK',
-            'Web Attack � Sql Injection': 'ATTACK'
+            'Web Attack � Sql Injection': 'ATTACK',
+            'Bot': 'ATTACK',
+            'FTP-Patator': 'ATTACK',
+            'SSH-Patator': 'ATTACK',
+            'DoS slowloris':'ATTACK',
+            'DoS Slowhttptest':'ATTACK',
+            'DoS Hulk':'ATTACK',
+            'DoS GoldenEye':'ATTACK',
+            'Heartbleed':'ATTACK'
         }
 
         for entry in raw_train_data_results:

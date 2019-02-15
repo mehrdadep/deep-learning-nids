@@ -1,7 +1,7 @@
 from DataProcess import DataProcess
 from keras.optimizers import Adam
 from keras.models import Sequential, Model
-from keras.layers import Dense, Activation, Dropout, LSTM, Input, Concatenate, GRU, Conv1D
+from keras.layers import Dense, Activation, Dropout, LSTM, Input, Concatenate, GRU, Conv1D,Flatten
 import keras 
 import numpy as np
 from keras.utils import np_utils
@@ -26,6 +26,9 @@ x_test_2 = x_test[:,sliceCount1:sliceCount2]
 x_test_3 = x_test[:,sliceCount2:]
 
 # reshape input to be [samples, timesteps, features]
+# x_train = x_train.reshape(x_train.shape[0], 1, x_train.shape[1])
+# x_test = x_test.reshape(x_test.shape[0], 1, x_test.shape[1])
+
 x_train_1 = x_train_1.reshape(x_train_1.shape[0], 1, x_train_1.shape[1])
 x_train_2 = x_train_2.reshape(x_train_2.shape[0], 1, x_train_2.shape[1])
 x_train_3 = x_train_3.reshape(x_train_3.shape[0], 1, x_train_3.shape[1])
@@ -44,23 +47,24 @@ input_3 = Input(shape=(x_train_3.shape[1],x_train_3.shape[2]))
 
 left = LSTM(120, return_sequences=True)(input_1)
 left = LSTM(120, return_sequences=True)(left)
-left = Dropout(0.1)(left)
+left = Dropout(0.05)(left)
 
 middle = LSTM(120, return_sequences=True)(input_2)
 middle = LSTM(120, return_sequences=True)(middle)
-middle = Dropout(0.1)(middle)
+middle = Dropout(0.05)(middle)
 
 right = LSTM(120,  return_sequences=True)(input_3)
 right = LSTM(120, return_sequences=True)(right)
-right = Dropout(0.1)(right)
+right = Dropout(0.05)(right)
 
 merged = Concatenate(axis=-1)([left,middle,right])
 
-final = GRU(120, return_sequences=False)(merged)
-final = Dropout(0.1)(final)
+final = GRU(60, return_sequences=False)(merged)
+final = Dropout(0.05)(final)
 
+# final = Flatten()(final)
 # binary
-predictions = Dense(1, activation='hard_sigmoid')(final)
+predictions = Dense(1, activation='sigmoid')(final)
 
 # # multiclass (nsl = 5 and cicids = 7)
 # predictions = Dense(5, activation='softmax')(x)
@@ -70,7 +74,7 @@ model = Model(inputs=[input_1,input_2,input_3], outputs=predictions)
 model.summary()
 
 # # optimizer
-adam = Adam(lr=0.0001)
+adam = Adam(lr=0.001)
 
 # #binary
 model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])
@@ -89,7 +93,7 @@ loss, accuracy = model.evaluate([x_test_1,x_test_2,x_test_3], y_test, batch_size
 print("\nLoss: %.2f, Accuracy: %.2f%%" % (loss, accuracy*100))
 # print("\nLoss 21: %.2f, Accuracy 21: %.2f%%" % (loss_21, accuracy_21*100))
 
-y_pred = model.predict_classes(x_test)
+y_pred = model.predict([x_test_1,x_test_2,x_test_3])
 # y_pred_21 = model.predict_classes(x_test_21)
 
 print("\nAnomaly in Test: ",np.count_nonzero(y_test, axis=0))

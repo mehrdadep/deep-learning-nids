@@ -10,7 +10,7 @@ from keras.utils import np_utils
 # get and process data
 data = DataProcess()
 # x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_multiclass()
-x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_binary()
+x_train, y_train, x_test, y_test = data.return_processed_cicids_data_binary()
 
 
 # make 3 inputs (each 1/3 of row size)
@@ -74,7 +74,7 @@ model = Model(inputs=[input_1,input_2,input_3], outputs=predictions)
 model.summary()
 
 # # optimizer
-adam = Adam(lr=0.001)
+adam = Adam(lr=0.0001)
 
 # #binary
 model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])

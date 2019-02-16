@@ -44,7 +44,7 @@ model.add(Activation('sigmoid'))
 model.summary()
 
 # optimizer
-adam = Adam(lr=0.002)
+adam = Adam(lr=0.0008)
 
 #binary
 model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])

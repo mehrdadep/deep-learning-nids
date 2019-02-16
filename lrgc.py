@@ -58,7 +58,7 @@ model = Model(inputs=[input_1,input_2,input_3], outputs=predictions)
 model.summary()
 
 # # optimizer
-adam = Adam(lr=0.002)
+adam = Adam(lr=0.0013)
 
 # #binary
 model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])

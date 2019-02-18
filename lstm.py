@@ -6,6 +6,7 @@ import keras
 import numpy as np
 from keras.utils import np_utils
 import time
+from sklearn.metrics import classification_report, confusion_matrix
 
 
 # get and process data
@@ -45,7 +46,7 @@ model.add(Activation('hard_sigmoid'))
 model.summary()
 
 # optimizer
-adam = Adam(lr=0.0008)
+adam = Adam(lr=0.0001)
 
 #binary
 model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])
@@ -62,9 +63,10 @@ model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=100, batch_
 loss, accuracy = model.evaluate(x_test, y_test, batch_size=32)
 
 print("--- %s seconds ---" % (time.time() - start))
-print("\nLoss: %.2f, Accuracy: %.2f%%" % (loss, accuracy*100))
+y_pred = model.predict(x_test)
+y_classes = np_utils.to_categorical(y_pred).argmax(axis=-1)
 
-y_pred = model.predict_classes(x_test)
-
-print("\nAnomaly in Test: ",np.count_nonzero(y_test, axis=0))
-print("\nAnomaly in Prediction: ",np.count_nonzero(y_pred, axis=0))
+print('Confusion Matrix')
+print(confusion_matrix(y_test, y_classes))
+print('Classification Report')
+print(classification_report(y_test, y_classes))

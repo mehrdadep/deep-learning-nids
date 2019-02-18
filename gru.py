@@ -6,6 +6,7 @@ import keras
 import numpy as np
 from keras.utils import np_utils
 import time
+from sklearn.metrics import classification_report, confusion_matrix
 
 
 
@@ -46,7 +47,7 @@ model.add(Activation('hard_sigmoid'))
 model.summary()
 
 # optimizer
-adam = Adam(lr=0.0008)
+adam = Adam(lr=0.0001)
 
 #binary
 model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])
@@ -55,7 +56,7 @@ model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy
 # model.compile(optimizer = adam, loss = 'categorical_crossentropy', metrics=['accuracy'])
 
 start = time.time()
-model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=50, batch_size=32)
+model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=100, batch_size=32)
 
 # save the model
 # model.save("model.hdf5")
@@ -64,8 +65,10 @@ model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=50, batch_s
 loss, accuracy = model.evaluate(x_test, y_test, batch_size=32)
 print("--- %s seconds ---" % (time.time() - start))
 
-y_pred = model.predict_classes(x_test)
+y_pred = model.predict(x_test)
+y_classes = np_utils.to_categorical(y_pred).argmax(axis=-1)
 
-print("Loss: %.2f, Accuracy: %.2f%%" % (loss, accuracy*100))
-print("Anomaly in Test: ",np.count_nonzero(y_test, axis=0))
-print("Anomaly in Prediction: ",np.count_nonzero(y_pred, axis=0))
+print('Confusion Matrix')
+print(confusion_matrix(y_test, y_classes))
+print('Classification Report')
+print(classification_report(y_test, y_classes))

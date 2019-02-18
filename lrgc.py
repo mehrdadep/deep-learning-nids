@@ -6,6 +6,7 @@ import keras
 import numpy as np
 from keras.utils import np_utils
 import time
+from sklearn.metrics import classification_report, confusion_matrix
 
 
 # get and process data
@@ -58,7 +59,7 @@ model = Model(inputs=[input_1,input_2,input_3], outputs=predictions)
 model.summary()
 
 # # optimizer
-adam = Adam(lr=0.0013)
+adam = Adam(lr=0.001)
 
 # #binary
 model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])
@@ -75,11 +76,11 @@ loss, accuracy = model.evaluate([x_test,x_test,x_test], y_test, batch_size=32)
 # loss_21, accuracy_21 = model.evaluate(x_test_21, y_test_21, batch_size=32)
 
 print("--- %s seconds ---" % (time.time() - start))
-print("\nLoss: %.2f, Accuracy: %.2f%%" % (loss, accuracy*100))
-# print("\nLoss 21: %.2f, Accuracy 21: %.2f%%" % (loss_21, accuracy_21*100))
 
 y_pred = model.predict([x_test,x_test,x_test])
-# y_pred_21 = model.predict_classes(x_test_21)
+y_classes = np_utils.to_categorical(y_pred).argmax(axis=-1)
 
-print("\nAnomaly in Test: ",np.count_nonzero(y_test, axis=0))
-print("\nAnomaly in Prediction: ",np.count_nonzero(y_pred, axis=0))
+print('Confusion Matrix')
+print(confusion_matrix(y_test, y_classes))
+print('Classification Report')
+print(classification_report(y_test, y_classes))

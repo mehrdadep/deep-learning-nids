@@ -7,7 +7,7 @@ import numpy as np
 from keras.utils import np_utils
 import time
 from sklearn.metrics import classification_report, confusion_matrix
-
+import winsound
 
 # get and process data
 data = DataProcess()
@@ -90,3 +90,4 @@ print(confusion_matrix(y_test, y_pred))
 # print(confusion_matrix(y_test.argmax(axis=1), y_pred.argmax(axis=1)))
 print('Classification Report')
 print(classification_report(y_test, y_pred))
+winsound.PlaySound("SystemHand", winsound.SND_ALIAS)

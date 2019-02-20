@@ -659,16 +659,16 @@ class DataProcess:
            os.makedirs(mul_cicids)
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_features.csv")
-        np.savetxt(filepath, train_data_features, delimiter=",")
+        np.savetxt(filepath, train_data_features, delimiter=",", fmt='%.8e')
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_results.csv")
-        np.savetxt(filepath, train_data_results, delimiter=",")
+        np.savetxt(filepath, train_data_results, delimiter=",", fmt='%.8e')
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-cicids', "test_data_features.csv")
-        np.savetxt(filepath, test_data_features, delimiter=",")
+        np.savetxt(filepath, test_data_features, delimiter=",", fmt='%.8e')
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-cicids', "test_data_results.csv")
-        np.savetxt(filepath, test_data_results, delimiter=",")
+        np.savetxt(filepath, test_data_results, delimiter=",", fmt='%.8e')
 
         return True
 
@@ -811,16 +811,16 @@ class DataProcess:
            os.makedirs(mul_cicids)
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_features.csv")
-        np.savetxt(filepath, train_data_features, delimiter=",")
+        np.savetxt(filepath, train_data_features, delimiter=",", fmt='%.8e')
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_results.csv")
-        np.savetxt(filepath, train_data_results, delimiter=",")
+        np.savetxt(filepath, train_data_results, delimiter=",", fmt='%.8e')
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_features.csv")
-        np.savetxt(filepath, test_data_features, delimiter=",")
+        np.savetxt(filepath, test_data_features, delimiter=",", fmt='%.8e')
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_results.csv")
-        np.savetxt(filepath, test_data_results, delimiter=",")
+        np.savetxt(filepath, test_data_results, delimiter=",", fmt='%.8e')
 
         return True
 

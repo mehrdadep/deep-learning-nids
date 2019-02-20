@@ -4,13 +4,8 @@ import os
 data =  DataProcess()
 
 try:
-    data.cicids_process_data_binary()
-except:
-    print('bin')
-try:
     data.cicids_process_data_multiclass()
-except:
-    print('mult')
+except Exception as e:
+    print(e)
 
-os.system("shutdown /s /t 1")
 

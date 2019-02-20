@@ -1,5 +1,6 @@
 from DataProcess import DataProcess
 import os
+import numpy as np
 
 data =  DataProcess()
 
@@ -9,3 +10,5 @@ except Exception as e:
     print(e)
 
 
+import winsound
+winsound.PlaySound("SystemHand", winsound.SND_ALIAS)

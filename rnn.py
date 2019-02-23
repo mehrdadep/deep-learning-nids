@@ -12,8 +12,8 @@ import winsound
 
 # get and process data
 data = DataProcess()
-x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_multiclass()
-# x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_binary()
+# x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_multiclass()
+x_train, y_train, x_test, y_test = data.return_processed_cicids_data_binary()
 
 
 # reshape input to be [samples, timesteps, features]
@@ -23,7 +23,6 @@ x_test = x_test.reshape(x_test.shape[0], 1, x_test.shape[1])
 # multiclass
 y_train=np_utils.to_categorical(y_train)
 y_test=np_utils.to_categorical(y_test)
-y_test_21=np_utils.to_categorical(y_test_21)
 
 model = Sequential()
 model.add(SimpleRNN(120, input_shape = (x_train.shape[1],x_train.shape[2]), return_sequences=True))
@@ -46,7 +45,7 @@ model.add(Activation('softmax'))
 model.summary()
 
 # optimizer
-adam = Adam(lr=0.001)
+adam = Adam(lr=0.0001)
 
 #binary
 # model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])

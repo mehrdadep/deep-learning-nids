@@ -46,7 +46,7 @@ model.add(Activation('softmax'))
 model.summary()
 
 # optimizer
-adam = Adam(lr=0.0008)
+adam = Adam(lr=0.001)
 
 #binary
 # model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])
@@ -55,7 +55,7 @@ adam = Adam(lr=0.0008)
 model.compile(optimizer = adam, loss = 'categorical_crossentropy', metrics=['accuracy'])
 
 start = time.time()
-model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=100, batch_size=32)
+model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=30, batch_size=32)
 
 # save the model
 # model.save("model.hdf5")

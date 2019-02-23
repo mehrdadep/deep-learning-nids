@@ -12,8 +12,8 @@ import winsound
 
 # get and process data
 data = DataProcess()
-# x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_multiclass()
-x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_binary()
+x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_multiclass()
+# x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_cicids_data_binary()
 
 
 # reshape input to be [samples, timesteps, features]
@@ -22,9 +22,9 @@ x_test = x_test.reshape(x_test.shape[0], 1, x_test.shape[1])
 x_test_21 = x_test_21.reshape(x_test_21.shape[0], 1, x_test_21.shape[1])
 
 # multiclass
-# y_train=np_utils.to_categorical(y_train)
-# y_test=np_utils.to_categorical(y_test)
-# y_test_21=np_utils.to_categorical(y_test_21)
+y_train=np_utils.to_categorical(y_train)
+y_test=np_utils.to_categorical(y_test)
+y_test_21=np_utils.to_categorical(y_test_21)
 
 model = Sequential()
 model.add(LSTM(120, input_shape = (x_train.shape[1],x_train.shape[2]), return_sequences=True))
@@ -37,23 +37,23 @@ model.add(LSTM(120, return_sequences=False))
 model.add(Dropout(0.1))
 
 # binary
-model.add(Dense(1))
-model.add(Activation('hard_sigmoid'))
+# model.add(Dense(1))
+# model.add(Activation('sigmoid'))
 
 # multiclass
-# model.add(Dense(5))
-# model.add(Activation('softmax'))
+model.add(Dense(5))
+model.add(Activation('softmax'))
 
 model.summary()
 
 # optimizer
-adam = Adam(lr=0.0003)
+adam = Adam(lr=0.001)
 
 #binary
-model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])
+# model.compile(optimizer = adam, loss = 'binary_crossentropy', metrics=['accuracy'])
 
 #multiclass
-# model.compile(optimizer = adam, loss = 'categorical_crossentropy', metrics=['accuracy'])
+model.compile(optimizer = adam, loss = 'categorical_crossentropy', metrics=['accuracy'])
 
 start = time.time()
 model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=100, batch_size=32)
@@ -71,9 +71,9 @@ y_pred = [np.round(x) for x in y_pred]
 y_pred = np.array(y_pred)
 print('Confusion Matrix')
 #binary
-print(confusion_matrix(y_test, y_pred))
+# print(confusion_matrix(y_test, y_pred))
 #multiclass
-# print(confusion_matrix(y_test.argmax(axis=1), y_pred.argmax(axis=1)))
+print(confusion_matrix(y_test.argmax(axis=1), y_pred.argmax(axis=1)))
 print('Classification Report')
 print(classification_report(y_test, y_pred))
 winsound.PlaySound("SystemHand", winsound.SND_ALIAS)

@@ -13,7 +13,7 @@ import winsound
 
 # get and process data
 data = DataProcess()
-# x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_multiclass()
+# x_train, y_train, x_test, y_test = data.return_processed_data_multiclass()
 x_train, y_train, x_test, y_test = data.return_processed_cicids_data_binary()
 
 

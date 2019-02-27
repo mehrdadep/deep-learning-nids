@@ -645,7 +645,14 @@ class DataProcess:
                     normalized_train_data_features[x][y], ymin_train[y], ymax_train[y])
         
         # create test and train data
-        train_count = int((normalized_train_data_features.shape[0] * 75) / 100)
+        # remove to 1.5 milion
+        final_count = 1200000
+        if (int(normalized_train_data_features.shape[0]) < 1200000):
+            final_count = int(normalized_train_data_features.shape[0])
+        normalized_train_data_features = normalized_train_data_features[:final_count, :]
+        normalized_train_data_results = normalized_train_data_results[:final_count]
+
+        train_count = int((normalized_train_data_features.shape[0] * 70) / 100)
 
         train_data_features = normalized_train_data_features[:train_count, :]
         test_data_features = normalized_train_data_features[train_count:, :]
@@ -797,7 +804,14 @@ class DataProcess:
                     normalized_train_data_features[x][y], ymin_train[y], ymax_train[y])
         
         # create test and train data
-        train_count = int((normalized_train_data_features.shape[0] * 75) / 100)
+        # remove to 1.5 milion
+        final_count = 1200000
+        if (int(normalized_train_data_features.shape[0]) < 1200000):
+            final_count = int(normalized_train_data_features.shape[0])
+        normalized_train_data_features = normalized_train_data_features[:final_count, :]
+        normalized_train_data_results = normalized_train_data_results[:final_count]
+
+        train_count = int((normalized_train_data_features.shape[0] * 70) / 100)
 
         train_data_features = normalized_train_data_features[:train_count, :]
         test_data_features = normalized_train_data_features[train_count:, :]
@@ -833,18 +847,19 @@ class DataProcess:
 
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_features.csv")
+        
         normalized_train_data_features = np.genfromtxt(filepath, delimiter=",")
-
+        print('normalized_train_data_features')
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_results.csv")
         normalized_train_data_results = np.genfromtxt(filepath, delimiter=",")
-
+        print('normalized_train_data_results')
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_features.csv")
         normalized_test_data_features = np.genfromtxt(filepath, delimiter=",")
-
+        print('normalized_test_data_features')
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_results.csv")
         normalized_test_data_results = np.genfromtxt(filepath, delimiter=",")
-
+        print('normalized_test_data_results')
         return [normalized_train_data_features, normalized_train_data_results, normalized_test_data_features, normalized_test_data_results]

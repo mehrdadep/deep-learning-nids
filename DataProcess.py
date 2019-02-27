@@ -646,11 +646,11 @@ class DataProcess:
         
         # create test and train data
         # remove to 1.5 milion
-        final_count = 1200000
-        if (int(normalized_train_data_features.shape[0]) < 1200000):
-            final_count = int(normalized_train_data_features.shape[0])
-        normalized_train_data_features = normalized_train_data_features[:final_count, :]
-        normalized_train_data_results = normalized_train_data_results[:final_count]
+        # final_count = 1200000
+        # if (int(normalized_train_data_features.shape[0]) < 1200000):
+        #     final_count = int(normalized_train_data_features.shape[0])
+        # normalized_train_data_features = normalized_train_data_features[:final_count, :]
+        # normalized_train_data_results = normalized_train_data_results[:final_count]
 
         train_count = int((normalized_train_data_features.shape[0] * 70) / 100)
 
@@ -805,11 +805,11 @@ class DataProcess:
         
         # create test and train data
         # remove to 1.5 milion
-        final_count = 1200000
-        if (int(normalized_train_data_features.shape[0]) < 1200000):
-            final_count = int(normalized_train_data_features.shape[0])
-        normalized_train_data_features = normalized_train_data_features[:final_count, :]
-        normalized_train_data_results = normalized_train_data_results[:final_count]
+        # final_count = 1200000
+        # if (int(normalized_train_data_features.shape[0]) < 1200000):
+        #     final_count = int(normalized_train_data_features.shape[0])
+        # normalized_train_data_features = normalized_train_data_features[:final_count, :]
+        # normalized_train_data_results = normalized_train_data_results[:final_count]
 
         train_count = int((normalized_train_data_features.shape[0] * 70) / 100)
 

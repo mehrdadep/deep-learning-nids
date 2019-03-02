@@ -499,22 +499,22 @@ class DataProcess:
             self.nsl_process_data_multiclass()
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_train_data_features.csv")
-        normalized_train_data_features = np.genfromtxt(filepath, delimiter=",")
+        normalized_train_data_features = np.loadtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_train_data_results.csv")
-        normalized_train_data_results = np.genfromtxt(filepath, delimiter=",")
+        normalized_train_data_results = np.loadtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_test_data_features.csv")
-        normalized_test_data_features = np.genfromtxt(filepath, delimiter=",")
+        normalized_test_data_features = np.loadtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_test_data_results.csv")
-        normalized_test_data_results = np.genfromtxt(filepath, delimiter=",")
+        normalized_test_data_results = np.loadtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_test_21_data_features.csv")
-        normalized_test_21_data_features = np.genfromtxt(filepath, delimiter=",")
+        normalized_test_21_data_features = np.loadtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-nsl', "normalized_test_21_data_results.csv")
-        normalized_test_21_data_results = np.genfromtxt(filepath, delimiter=",")
+        normalized_test_21_data_results = np.loadtxt(filepath, delimiter=",")
 
         return [normalized_train_data_features, normalized_train_data_results, normalized_test_data_features, normalized_test_data_results, normalized_test_21_data_features, normalized_test_21_data_results]
 
@@ -526,22 +526,22 @@ class DataProcess:
             self.nsl_process_data_binary()
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_train_data_features.csv")
-        normalized_train_data_features = np.genfromtxt(filepath, delimiter=",")
+        normalized_train_data_features = np.loadtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_train_data_results.csv")
-        normalized_train_data_results = np.genfromtxt(filepath, delimiter=",")
+        normalized_train_data_results = np.loadtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_test_data_features.csv")
-        normalized_test_data_features = np.genfromtxt(filepath, delimiter=",")
+        normalized_test_data_features = np.loadtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_test_data_results.csv")
-        normalized_test_data_results = np.genfromtxt(filepath, delimiter=",")
+        normalized_test_data_results = np.loadtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_test_21_data_features.csv")
-        normalized_test_21_data_features = np.genfromtxt(filepath, delimiter=",")
+        normalized_test_21_data_features = np.loadtxt(filepath, delimiter=",")
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-nsl', "normalized_test_21_data_results.csv")
-        normalized_test_21_data_results = np.genfromtxt(filepath, delimiter=",")
+        normalized_test_21_data_results = np.loadtxt(filepath, delimiter=",")
 
         return [normalized_train_data_features, normalized_train_data_results, normalized_test_data_features, normalized_test_data_results, normalized_test_21_data_features, normalized_test_21_data_results]
 
@@ -688,19 +688,19 @@ class DataProcess:
 
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_features.csv")
-        normalized_train_data_features = np.genfromtxt(filepath, delimiter=",")
+        normalized_train_data_features = np.loadtxt(filepath, delimiter=",")
 
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_results.csv")
-        normalized_train_data_results = np.genfromtxt(filepath, delimiter=",")
+        normalized_train_data_results = np.loadtxt(filepath, delimiter=",")
 
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-cicids', "test_data_features.csv")
-        normalized_test_data_features = np.genfromtxt(filepath, delimiter=",")
+        normalized_test_data_features = np.loadtxt(filepath, delimiter=",")
 
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-cicids', "test_data_results.csv")
-        normalized_test_data_results = np.genfromtxt(filepath, delimiter=",")
+        normalized_test_data_results = np.loadtxt(filepath, delimiter=",")
 
         return [normalized_train_data_features, normalized_train_data_results, normalized_test_data_features, normalized_test_data_results]
     
@@ -848,18 +848,18 @@ class DataProcess:
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_features.csv")
         
-        normalized_train_data_features = np.genfromtxt(filepath, delimiter=",")
+        normalized_train_data_features = np.loadtxt(filepath, delimiter=",")
         print('normalized_train_data_features')
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_results.csv")
-        normalized_train_data_results = np.genfromtxt(filepath, delimiter=",")
+        normalized_train_data_results = np.loadtxt(filepath, delimiter=",")
         print('normalized_train_data_results')
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_features.csv")
-        normalized_test_data_features = np.genfromtxt(filepath, delimiter=",")
+        normalized_test_data_features = np.loadtxt(filepath, delimiter=",")
         print('normalized_test_data_features')
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_results.csv")
-        normalized_test_data_results = np.genfromtxt(filepath, delimiter=",")
+        normalized_test_data_results = np.loadtxt(filepath, delimiter=",")
         print('normalized_test_data_results')
         return [normalized_train_data_features, normalized_train_data_results, normalized_test_data_features, normalized_test_data_results]

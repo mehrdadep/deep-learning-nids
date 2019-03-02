@@ -30,17 +30,17 @@ input_3 = Input(name='right_input',shape=(x_train.shape[1],x_train.shape[2]))
 left = LSTM(120, return_sequences=True)(input_1)
 left = LSTM(120, return_sequences=True)(left)
 left = LSTM(120, return_sequences=True)(left)
-left = Dropout(0.1)(left)
+left = Dropout(0.2)(left)
 
 middle = SimpleRNN(120, return_sequences=True)(input_2)
 middle = SimpleRNN(120, return_sequences=True)(middle)
 middle = SimpleRNN(120, return_sequences=True)(middle)
-middle = Dropout(0.1)(middle)
+middle = Dropout(0.2)(middle)
 
 right = GRU(120, return_sequences=True)(input_3)
 right = GRU(120, return_sequences=True)(right)
 right = GRU(120, return_sequences=True)(right)
-right = Dropout(0.1)(right)
+right = Dropout(0.2)(right)
 
 merged = Concatenate(axis=-1)([left,middle,right])
 

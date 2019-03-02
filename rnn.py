@@ -26,13 +26,13 @@ x_test = x_test.reshape(x_test.shape[0], 1, x_test.shape[1])
 
 model = Sequential()
 model.add(SimpleRNN(120, input_shape = (x_train.shape[1],x_train.shape[2]), return_sequences=True))
-model.add(Dropout(0.1))
+model.add(Dropout(0.2))
 
 model.add(SimpleRNN(120, return_sequences=True))
-model.add(Dropout(0.1))
+model.add(Dropout(0.2))
 
 model.add(SimpleRNN(120, return_sequences=False))
-model.add(Dropout(0.1))
+model.add(Dropout(0.2))
 
 # binary
 model.add(Dense(1))

@@ -689,19 +689,19 @@ class DataProcess:
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_features.csv")
         normalized_train_data_features = np.loadtxt(filepath, delimiter=",")
-
+        print('normalized_train_data_features finished!')
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_results.csv")
         normalized_train_data_results = np.loadtxt(filepath, delimiter=",")
-
+        print('normalized_train_data_results finished!')
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-cicids', "test_data_features.csv")
         normalized_test_data_features = np.loadtxt(filepath, delimiter=",")
-
+        print('normalized_test_data_features finished!')
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'mul-cicids', "test_data_results.csv")
         normalized_test_data_results = np.loadtxt(filepath, delimiter=",")
-
+        print('normalized_test_data_results finished!')
         return [normalized_train_data_features, normalized_train_data_results, normalized_test_data_features, normalized_test_data_results]
     
     @classmethod
@@ -849,17 +849,17 @@ class DataProcess:
                 self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_features.csv")
         
         normalized_train_data_features = np.loadtxt(filepath, delimiter=",")
-        print('normalized_train_data_features')
+        print('normalized_train_data_features finished!')
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_results.csv")
         normalized_train_data_results = np.loadtxt(filepath, delimiter=",")
-        print('normalized_train_data_results')
+        print('normalized_train_data_results finished!')
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_features.csv")
         normalized_test_data_features = np.loadtxt(filepath, delimiter=",")
-        print('normalized_test_data_features')
+        print('normalized_test_data_features finished!')
         filepath = os.path.join(
                 self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_results.csv")
         normalized_test_data_results = np.loadtxt(filepath, delimiter=",")
-        print('normalized_test_data_results')
+        print('normalized_test_data_results finished!')
         return [normalized_train_data_features, normalized_train_data_results, normalized_test_data_features, normalized_test_data_results]

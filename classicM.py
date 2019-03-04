@@ -19,7 +19,6 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import (precision_score, recall_score,f1_score, accuracy_score,mean_squared_error,mean_absolute_error, roc_curve, classification_report,auc)
-from pandas_ml import ConfusionMatrix
 
 # get and process data
 data = DataProcess()
@@ -75,7 +74,7 @@ print("********  Naive Bayes ***********\n")
 expected = y_test.ravel()
 predicted = model.predict(x_test)
 
-cm = ConfusionMatrix(expected, predicted)
+cm = metrics.confusion_matrix(expected, predicted)
 print(expected.shape)
 print(predicted.shape)
 expected = np.array(expected)

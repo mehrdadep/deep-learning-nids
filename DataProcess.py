@@ -80,7 +80,6 @@ class DataProcess:
         res[0:0] = attack[attack_dict[reslut]]
         # make all values np.float64
         res = [np.float64(x) for x in res]
-
         return np.array(res)
 
     @classmethod
@@ -553,50 +552,44 @@ class DataProcess:
         train_data_1 = self.read_file_lines('cicids', 'Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv')
         train_data_1.pop(0)
         shuffle(train_data_1)
-        shuffle(train_data_1)
 
         train_data_2 = self.read_file_lines('cicids', 'Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv')
         train_data_2.pop(0)
-        shuffle(train_data_2)
         shuffle(train_data_2)
 
         train_data_3 = self.read_file_lines('cicids', 'Friday-WorkingHours-Morning.pcap_ISCX.csv')
         train_data_3.pop(0)
         shuffle(train_data_3)
-        shuffle(train_data_3)
 
-        train_data_4 = self.read_file_lines('cicids', 'Monday-WorkingHours.pcap_ISCX.csv')
-        train_data_4.pop(0)
-        shuffle(train_data_4)
-        shuffle(train_data_4)
+        # train_data_4 = self.read_file_lines('cicids', 'Monday-WorkingHours.pcap_ISCX.csv')
+        # train_data_4.pop(0)
+        # shuffle(train_data_4)
+        # shuffle(train_data_4)
 
-        train_data_5 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv')
-        train_data_5.pop(0) 
-        shuffle(train_data_5)
-        shuffle(train_data_5)
+        # train_data_5 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv')
+        # train_data_5.pop(0) 
+        # shuffle(train_data_5)
+        # shuffle(train_data_5)
 
         train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
         train_data_6.pop(0) 
-        shuffle(train_data_6)
         shuffle(train_data_6)
 
         train_data_7 = self.read_file_lines('cicids', 'Tuesday-WorkingHours.pcap_ISCX.csv')
         train_data_7.pop(0)
         shuffle(train_data_7)
-        shuffle(train_data_7) 
  
 
         train_data_8 = self.read_file_lines('cicids', 'Wednesday-workingHours.pcap_ISCX.csv')
         train_data_8.pop(0)
         shuffle(train_data_8)
-        shuffle(train_data_8)
 
+        train_data = train_data_1 + train_data_2+ train_data_3+ train_data_6+ train_data_7+ train_data_8
 
-        train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
+        # train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
         
         # extract data and shuffle it
         raw_train_data_features = [self.extract_features(x) for x in train_data]
-        shuffle(raw_train_data_features)
         shuffle(raw_train_data_features)
         shuffle(raw_train_data_features)
 
@@ -625,16 +618,24 @@ class DataProcess:
             'Heartbleed':'Web Attack'
         }
 
-        for entry in raw_train_data_results:
-            try:
-                attack[attack_dict[entry]] = ""
-            except:
-                print(entry)
+        attack['BENIGN'] = [int(0)]
+        attack['DoS'] = [int(1)]
+        attack['PortScan'] = [int(2)]
+        attack['Infiltration'] = [int(3)]
+        attack['Web Attack'] = [int(4)]
+        attack['Bot'] = [int(5)]
+        attack['Patator'] = [int(6)]
 
-        keys = list(attack.keys())
+        # for entry in raw_train_data_results:
+        #     try:
+        #         attack[attack_dict[entry]] = ""
+        #     except:
+        #         print(entry)
 
-        for i in range(0, len(keys)):
-            attack[keys[i]] = [int(i)]
+        # keys = list(attack.keys())
+
+        # for i in range(0, len(keys)):
+        #     attack[keys[i]] = [int(i)]
 
         # train data
         
@@ -724,51 +725,44 @@ class DataProcess:
         train_data_1 = self.read_file_lines('cicids', 'Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv')
         train_data_1.pop(0)
         shuffle(train_data_1)
-        shuffle(train_data_1)
 
         train_data_2 = self.read_file_lines('cicids', 'Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv')
         train_data_2.pop(0)
-        shuffle(train_data_2)
         shuffle(train_data_2)
         
         train_data_3 = self.read_file_lines('cicids', 'Friday-WorkingHours-Morning.pcap_ISCX.csv')
         train_data_3.pop(0)
         shuffle(train_data_3)
-        shuffle(train_data_3)
 
-        train_data_4 = self.read_file_lines('cicids', 'Monday-WorkingHours.pcap_ISCX.csv')
-        train_data_4.pop(0)
-        shuffle(train_data_4)
-        shuffle(train_data_4)
+        # train_data_4 = self.read_file_lines('cicids', 'Monday-WorkingHours.pcap_ISCX.csv')
+        # train_data_4.pop(0)
+        # shuffle(train_data_4)
+        # shuffle(train_data_4)
 
-        train_data_5 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv')
-        train_data_5.pop(0) 
-        shuffle(train_data_5)
-        shuffle(train_data_5)
+        # train_data_5 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv')
+        # train_data_5.pop(0) 
+        # shuffle(train_data_5)
+        # shuffle(train_data_5)
 
         train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
         train_data_6.pop(0) 
-        shuffle(train_data_6)
         shuffle(train_data_6)
 
         train_data_7 = self.read_file_lines('cicids', 'Tuesday-WorkingHours.pcap_ISCX.csv')
         train_data_7.pop(0)
         shuffle(train_data_7) 
-        shuffle(train_data_7) 
 
         train_data_8 = self.read_file_lines('cicids', 'Wednesday-workingHours.pcap_ISCX.csv')
         train_data_8.pop(0)
         shuffle(train_data_8)
-        shuffle(train_data_8)
 
-        train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
+        # train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
+        train_data = train_data_1 + train_data_2+ train_data_3+ train_data_6+ train_data_7+ train_data_8
 
         # extract data and shuffle it
         raw_train_data_features = [self.extract_features(x) for x in train_data]
         shuffle(raw_train_data_features)
         shuffle(raw_train_data_features)
-        shuffle(raw_train_data_features)
-
 
         # train data: put index 0 to 78 in data and 79  into result
         raw_train_data_results = [x[-1] for x in raw_train_data_features]
@@ -795,16 +789,19 @@ class DataProcess:
             'Heartbleed':'ATTACK'
         }
 
-        for entry in raw_train_data_results:
-            try:
-                attack[attack_dict[entry]] = ""
-            except:
-                print(entry)
+        # for entry in raw_train_data_results:
+        #     try:
+        #         attack[attack_dict[entry]] = ""
+        #     except:
+        #         print(entry)
+        # keys = list(attack.keys())
 
-        keys = list(attack.keys())
+        # for i in range(0, len(keys)):
+        #     attack[keys[i]] = [int(i)]
 
-        for i in range(0, len(keys)):
-            attack[keys[i]] = [int(i)]
+        attack['BENIGN'] = [int(0)]
+        attack['ATTACK'] = [int(1)]
+
 
         # train data
         

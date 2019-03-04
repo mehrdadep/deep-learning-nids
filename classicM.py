@@ -23,7 +23,7 @@ from pandas_ml import ConfusionMatrix
 
 # get and process data
 data = DataProcess()
-x_train, y_train, x_test, y_test, x_test_21, y_test_21 = data.return_processed_data_multiclass()
+x_train, y_train, x_test, y_test = data.return_processed_data_multiclass()
 
 # reshape input to be [samples, timesteps, features]
 # x_train = x_train.reshape(x_train.shape[0], 1, x_train.shape[1])

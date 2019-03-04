@@ -69,22 +69,25 @@ model = GaussianNB()
 model.fit(x_train, y_train.ravel())
 print("********  Naive Bayes ***********\n")
 
-# print(model)
+# make predictions
 # make predictions
 expected = y_test.ravel()
 predicted = model.predict(x_test)
-
+accuracy = accuracy_score(expected, predicted)
+print("******** LogisticRegression ***********\n")
 cm = metrics.confusion_matrix(expected, predicted)
-print(expected.shape)
-print(predicted.shape)
-expected = np.array(expected)
-predicted = np.array(predicted)
-cm.stats()
+print(cm)
+tpr = float(cm[0][0])/np.sum(cm[0])
+fpr = float(cm[1][1])/np.sum(cm[1])
+print("%.3f" %tpr)
+print("%.3f" %fpr)
+print("Accuracy")
+print("%.3f" %accuracy)
+print("fpr")
+print("%.3f" %fpr)
+print("tpr")
+print("%.3f" %tpr)
 
-# print(cm)
-print(expected.shape)
-print(predicted.shape)
-cm.stats()
 
 
 

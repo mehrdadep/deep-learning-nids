@@ -652,7 +652,7 @@ class DataProcess:
         # normalized_train_data_features = normalized_train_data_features[:final_count, :]
         # normalized_train_data_results = normalized_train_data_results[:final_count]
 
-        train_count = int((normalized_train_data_features.shape[0] * 70) / 100)
+        train_count = int((normalized_train_data_features.shape[0] * 65) / 100)
 
         train_data_features = normalized_train_data_features[:train_count, :]
         test_data_features = normalized_train_data_features[train_count:, :]
@@ -811,7 +811,7 @@ class DataProcess:
         # normalized_train_data_features = normalized_train_data_features[:final_count, :]
         # normalized_train_data_results = normalized_train_data_results[:final_count]
 
-        train_count = int((normalized_train_data_features.shape[0] * 70) / 100)
+        train_count = int((normalized_train_data_features.shape[0] * 65) / 100)
 
         train_data_features = normalized_train_data_features[:train_count, :]
         test_data_features = normalized_train_data_features[train_count:, :]

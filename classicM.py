@@ -79,7 +79,7 @@ print(expected.shape)
 print(predicted.shape)
 expected = np.array(expected)
 predicted = np.array(predicted)
-cm.print_stats()
+cm.stats()
 
 # print(cm)
 print(expected.shape)

@@ -549,6 +549,9 @@ class DataProcess:
         """
         read from data folder and return a list
         """
+        normal_limit = 560000
+        normal_count = 0
+
         train_data_1 = self.read_file_lines('cicids', 'Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv')
         train_data_1.pop(0)
         shuffle(train_data_1)
@@ -557,9 +560,9 @@ class DataProcess:
         train_data_2.pop(0)
         shuffle(train_data_2)
 
-        # train_data_3 = self.read_file_lines('cicids', 'Friday-WorkingHours-Morning.pcap_ISCX.csv')
-        # train_data_3.pop(0)
-        # shuffle(train_data_3)
+        train_data_3 = self.read_file_lines('cicids', 'Friday-WorkingHours-Morning.pcap_ISCX.csv')
+        train_data_3.pop(0)
+        shuffle(train_data_3)
 
         # train_data_4 = self.read_file_lines('cicids', 'Monday-WorkingHours.pcap_ISCX.csv')
         # train_data_4.pop(0)
@@ -571,9 +574,9 @@ class DataProcess:
         # shuffle(train_data_5)
         # shuffle(train_data_5)
 
-        # train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
-        # train_data_6.pop(0) 
-        # shuffle(train_data_6)
+        train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
+        train_data_6.pop(0) 
+        shuffle(train_data_6)
 
         train_data_7 = self.read_file_lines('cicids', 'Tuesday-WorkingHours.pcap_ISCX.csv')
         train_data_7.pop(0)
@@ -584,12 +587,23 @@ class DataProcess:
         train_data_8.pop(0)
         shuffle(train_data_8)
 
-        train_data = train_data_1 + train_data_2 + train_data_7+ train_data_8
+        train_data = train_data_1 + train_data_2 + train_data_3+ train_data_6+ train_data_7+ train_data_8
 
         # train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
         
         # extract data and shuffle it
-        raw_train_data_features = [self.extract_features(x) for x in train_data]
+        raw_train_data_features_extra = [self.extract_features(x) for x in train_data]
+
+        # limit normal data
+        raw_train_data_features = []
+        for i in range(0,len(raw_train_data_features_extra)):
+            if 'BENIGN' in raw_train_data_features_extra[i][-1]:
+                normal_count = normal_count + 1
+                if normal_limit >= normal_count:
+                    raw_train_data_features.append(raw_train_data_features_extra[i])
+            else:
+                raw_train_data_features.append(raw_train_data_features_extra[i])
+
         shuffle(raw_train_data_features)
         shuffle(raw_train_data_features)
 
@@ -609,13 +623,13 @@ class DataProcess:
             'Web Attack � XSS': 'Web Attack',
             'Web Attack � Sql Injection': 'Web Attack',
             'Bot': 'Bot',
-            'FTP-Patator': 'Patator',
-            'SSH-Patator': 'Patator',
+            'FTP-Patator': 'Brute Force',
+            'SSH-Patator': 'Brute Force',
             'DoS slowloris':'DoS',
             'DoS Slowhttptest':'DoS',
             'DoS Hulk':'DoS',
             'DoS GoldenEye':'DoS',
-            'Heartbleed':'Web Attack'
+            'Heartbleed':'DoS'
         }
 
         attack['BENIGN'] = [int(0)]
@@ -624,7 +638,7 @@ class DataProcess:
         attack['Infiltration'] = [int(3)]
         attack['Web Attack'] = [int(4)]
         attack['Bot'] = [int(5)]
-        attack['Patator'] = [int(6)]
+        attack['Brute Force'] = [int(6)]
 
         # train data
         
@@ -646,7 +660,7 @@ class DataProcess:
                 normalized_train_data_features[x][y] = self.normalize_value(
                     normalized_train_data_features[x][y], ymin_train[y], ymax_train[y])
 
-        train_count = int((normalized_train_data_features.shape[0] * 67) / 100)
+        train_count = int((normalized_train_data_features.shape[0] * 65) / 100)
 
         train_data_features = normalized_train_data_features[:train_count, :]
         test_data_features = normalized_train_data_features[train_count:, :]
@@ -660,13 +674,13 @@ class DataProcess:
            os.makedirs(mul_cicids)
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_features.csv")
-        np.savetxt(filepath, train_data_features, delimiter=",", fmt='%.5e')
+        np.savetxt(filepath, train_data_features, delimiter=",", fmt='%.10e')
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-cicids', "train_data_results.csv")
         np.savetxt(filepath, train_data_results, delimiter=",", fmt='%.1e')
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-cicids', "test_data_features.csv")
-        np.savetxt(filepath, test_data_features, delimiter=",", fmt='%.5e')
+        np.savetxt(filepath, test_data_features, delimiter=",", fmt='%.10e')
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-cicids', "test_data_results.csv")
         np.savetxt(filepath, test_data_results, delimiter=",", fmt='%.1e')
@@ -703,6 +717,9 @@ class DataProcess:
         """
         read from data folder and return a list
         """
+        normal_limit = 560000
+        normal_count = 0
+
         train_data_1 = self.read_file_lines('cicids', 'Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv')
         train_data_1.pop(0)
         shuffle(train_data_1)
@@ -711,9 +728,9 @@ class DataProcess:
         train_data_2.pop(0)
         shuffle(train_data_2)
         
-        # train_data_3 = self.read_file_lines('cicids', 'Friday-WorkingHours-Morning.pcap_ISCX.csv')
-        # train_data_3.pop(0)
-        # shuffle(train_data_3)
+        train_data_3 = self.read_file_lines('cicids', 'Friday-WorkingHours-Morning.pcap_ISCX.csv')
+        train_data_3.pop(0)
+        shuffle(train_data_3)
 
         # train_data_4 = self.read_file_lines('cicids', 'Monday-WorkingHours.pcap_ISCX.csv')
         # train_data_4.pop(0)
@@ -725,9 +742,9 @@ class DataProcess:
         # shuffle(train_data_5)
         # shuffle(train_data_5)
 
-        # train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
-        # train_data_6.pop(0) 
-        # shuffle(train_data_6)
+        train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
+        train_data_6.pop(0) 
+        shuffle(train_data_6)
 
         train_data_7 = self.read_file_lines('cicids', 'Tuesday-WorkingHours.pcap_ISCX.csv')
         train_data_7.pop(0)
@@ -738,10 +755,25 @@ class DataProcess:
         shuffle(train_data_8)
 
         # train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
-        train_data = train_data_1 + train_data_2 + train_data_7+ train_data_8
+        train_data = train_data_1 + train_data_2 + train_data_3+ train_data_6+ train_data_7+ train_data_8
 
         # extract data and shuffle it
-        raw_train_data_features = [self.extract_features(x) for x in train_data]
+        raw_train_data_features_extra = [self.extract_features(x) for x in train_data]
+
+        # limit normal data
+        raw_train_data_features = []
+        for i in range(0,len(raw_train_data_features_extra)):
+            if 'BENIGN' in raw_train_data_features_extra[i][-1]:
+                normal_count = normal_count + 1
+                if normal_limit >= normal_count:
+                    raw_train_data_features.append(raw_train_data_features_extra[i])
+            else:
+                if len(raw_train_data_features_extra[i][-1])>0:
+                    raw_train_data_features.append(raw_train_data_features_extra[i])
+                else:
+                    print(raw_train_data_features_extra[i][-1])
+
+
         shuffle(raw_train_data_features)
         shuffle(raw_train_data_features)
 
@@ -794,7 +826,7 @@ class DataProcess:
                 normalized_train_data_features[x][y] = self.normalize_value(
                     normalized_train_data_features[x][y], ymin_train[y], ymax_train[y])
 
-        train_count = int((normalized_train_data_features.shape[0] * 67) / 100)
+        train_count = int((normalized_train_data_features.shape[0] * 65) / 100)
 
         train_data_features = normalized_train_data_features[:train_count, :]
         test_data_features = normalized_train_data_features[train_count:, :]
@@ -808,13 +840,13 @@ class DataProcess:
            os.makedirs(mul_cicids)
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_features.csv")
-        np.savetxt(filepath, train_data_features, delimiter=",", fmt='%.5e')
+        np.savetxt(filepath, train_data_features, delimiter=",", fmt='%.10e')
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-cicids', "train_data_results.csv")
         np.savetxt(filepath, train_data_results, delimiter=",", fmt='%.1e')
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_features.csv")
-        np.savetxt(filepath, test_data_features, delimiter=",", fmt='%.5e')
+        np.savetxt(filepath, test_data_features, delimiter=",", fmt='%.10e')
         filepath = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_results.csv")
         np.savetxt(filepath, test_data_results, delimiter=",", fmt='%.1e')
@@ -845,4 +877,6 @@ class DataProcess:
                 self.get_current_working_directory(), 'data', 'bin-cicids', "test_data_results.csv")
         normalized_test_data_results = np.loadtxt(filepath, delimiter=",")
         print('normalized_test_data_results finished!')
+        print(normalized_train_data_features.shape,normalized_train_data_results.shape,
+                        normalized_test_data_features.shape,normalized_test_data_results.shape)
         return [normalized_train_data_features, normalized_train_data_results, normalized_test_data_features, normalized_test_data_results]

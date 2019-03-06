@@ -591,6 +591,8 @@ class DataProcess:
 
         # train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
         
+        shuffle(train_data)
+
         # extract data and shuffle it
         raw_train_data_features_extra = [self.extract_features(x) for x in train_data]
 
@@ -604,7 +606,6 @@ class DataProcess:
             else:
                 raw_train_data_features.append(raw_train_data_features_extra[i])
 
-        shuffle(raw_train_data_features)
         shuffle(raw_train_data_features)
 
         # train data: put index 0 to 78 in data and 79  into result
@@ -750,6 +751,8 @@ class DataProcess:
         # train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
         train_data = train_data_1 + train_data_2 + train_data_3+ train_data_5+ train_data_6+ train_data_7+ train_data_8
 
+        shuffle(train_data)
+
         # extract data and shuffle it
         raw_train_data_features_extra = [self.extract_features(x) for x in train_data]
 
@@ -763,11 +766,7 @@ class DataProcess:
             else:
                 if len(raw_train_data_features_extra[i][-1])>0:
                     raw_train_data_features.append(raw_train_data_features_extra[i])
-                else:
-                    print(raw_train_data_features_extra[i][-1])
 
-
-        shuffle(raw_train_data_features)
         shuffle(raw_train_data_features)
 
         # train data: put index 0 to 78 in data and 79  into result

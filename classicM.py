@@ -74,7 +74,6 @@ print("********  Naive Bayes ***********\n")
 expected = y_test.ravel()
 predicted = model.predict(x_test)
 accuracy = accuracy_score(expected, predicted)
-print("******** LogisticRegression ***********\n")
 cm = metrics.confusion_matrix(expected, predicted)
 print(cm)
 tpr = float(cm[0][0])/np.sum(cm[0])
@@ -126,6 +125,7 @@ print(model)
 expected = y_test.ravel()
 predicted = model.predict(x_test)
 # summarize the fit of the model
+accuracy = accuracy_score(expected, predicted)
 
 cm = metrics.confusion_matrix(expected, predicted)
 print("******** DecisionTree ***********\n")
@@ -156,6 +156,7 @@ model.fit(x_train, y_train.ravel())
 expected = y_test.ravel()
 predicted = model.predict(x_test)
 # summarize the fit of the model
+accuracy = accuracy_score(expected, predicted)
 
 cm = metrics.confusion_matrix(expected, predicted)
 print("******** AdaBoost ***********\n")
@@ -183,6 +184,7 @@ model = model.fit(x_train, y_train.ravel())
 expected = y_test.ravel()
 predicted = model.predict(x_test)
 # summarize the fit of the model
+accuracy = accuracy_score(expected, predicted)
 
 cm = metrics.confusion_matrix(expected, predicted)
 print("******** RandomForest ***********\n")

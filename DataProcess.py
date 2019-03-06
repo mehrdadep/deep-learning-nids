@@ -557,9 +557,9 @@ class DataProcess:
         train_data_2.pop(0)
         shuffle(train_data_2)
 
-        train_data_3 = self.read_file_lines('cicids', 'Friday-WorkingHours-Morning.pcap_ISCX.csv')
-        train_data_3.pop(0)
-        shuffle(train_data_3)
+        # train_data_3 = self.read_file_lines('cicids', 'Friday-WorkingHours-Morning.pcap_ISCX.csv')
+        # train_data_3.pop(0)
+        # shuffle(train_data_3)
 
         # train_data_4 = self.read_file_lines('cicids', 'Monday-WorkingHours.pcap_ISCX.csv')
         # train_data_4.pop(0)
@@ -571,9 +571,9 @@ class DataProcess:
         # shuffle(train_data_5)
         # shuffle(train_data_5)
 
-        train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
-        train_data_6.pop(0) 
-        shuffle(train_data_6)
+        # train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
+        # train_data_6.pop(0) 
+        # shuffle(train_data_6)
 
         train_data_7 = self.read_file_lines('cicids', 'Tuesday-WorkingHours.pcap_ISCX.csv')
         train_data_7.pop(0)
@@ -584,7 +584,7 @@ class DataProcess:
         train_data_8.pop(0)
         shuffle(train_data_8)
 
-        train_data = train_data_1 + train_data_2+ train_data_3+ train_data_6+ train_data_7+ train_data_8
+        train_data = train_data_1 + train_data_2 + train_data_7+ train_data_8
 
         # train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
         
@@ -626,17 +626,6 @@ class DataProcess:
         attack['Bot'] = [int(5)]
         attack['Patator'] = [int(6)]
 
-        # for entry in raw_train_data_results:
-        #     try:
-        #         attack[attack_dict[entry]] = ""
-        #     except:
-        #         print(entry)
-
-        # keys = list(attack.keys())
-
-        # for i in range(0, len(keys)):
-        #     attack[keys[i]] = [int(i)]
-
         # train data
         
         numericalized_train_data_features = [self.numericalize_feature_cicids(x) for x in raw_train_data_features]
@@ -656,14 +645,6 @@ class DataProcess:
             for y in range(0, normalized_train_data_features.shape[1]):
                 normalized_train_data_features[x][y] = self.normalize_value(
                     normalized_train_data_features[x][y], ymin_train[y], ymax_train[y])
-        
-        # create test and train data
-        # remove to 1.5 milion
-        # final_count = 1200000
-        # if (int(normalized_train_data_features.shape[0]) < 1200000):
-        #     final_count = int(normalized_train_data_features.shape[0])
-        # normalized_train_data_features = normalized_train_data_features[:final_count, :]
-        # normalized_train_data_results = normalized_train_data_results[:final_count]
 
         train_count = int((normalized_train_data_features.shape[0] * 67) / 100)
 
@@ -730,9 +711,9 @@ class DataProcess:
         train_data_2.pop(0)
         shuffle(train_data_2)
         
-        train_data_3 = self.read_file_lines('cicids', 'Friday-WorkingHours-Morning.pcap_ISCX.csv')
-        train_data_3.pop(0)
-        shuffle(train_data_3)
+        # train_data_3 = self.read_file_lines('cicids', 'Friday-WorkingHours-Morning.pcap_ISCX.csv')
+        # train_data_3.pop(0)
+        # shuffle(train_data_3)
 
         # train_data_4 = self.read_file_lines('cicids', 'Monday-WorkingHours.pcap_ISCX.csv')
         # train_data_4.pop(0)
@@ -744,9 +725,9 @@ class DataProcess:
         # shuffle(train_data_5)
         # shuffle(train_data_5)
 
-        train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
-        train_data_6.pop(0) 
-        shuffle(train_data_6)
+        # train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
+        # train_data_6.pop(0) 
+        # shuffle(train_data_6)
 
         train_data_7 = self.read_file_lines('cicids', 'Tuesday-WorkingHours.pcap_ISCX.csv')
         train_data_7.pop(0)
@@ -757,7 +738,7 @@ class DataProcess:
         shuffle(train_data_8)
 
         # train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
-        train_data = train_data_1 + train_data_2+ train_data_3+ train_data_6+ train_data_7+ train_data_8
+        train_data = train_data_1 + train_data_2 + train_data_7+ train_data_8
 
         # extract data and shuffle it
         raw_train_data_features = [self.extract_features(x) for x in train_data]
@@ -789,16 +770,6 @@ class DataProcess:
             'Heartbleed':'ATTACK'
         }
 
-        # for entry in raw_train_data_results:
-        #     try:
-        #         attack[attack_dict[entry]] = ""
-        #     except:
-        #         print(entry)
-        # keys = list(attack.keys())
-
-        # for i in range(0, len(keys)):
-        #     attack[keys[i]] = [int(i)]
-
         attack['BENIGN'] = [int(0)]
         attack['ATTACK'] = [int(1)]
 
@@ -822,14 +793,6 @@ class DataProcess:
             for y in range(0, normalized_train_data_features.shape[1]):
                 normalized_train_data_features[x][y] = self.normalize_value(
                     normalized_train_data_features[x][y], ymin_train[y], ymax_train[y])
-        
-        # create test and train data
-        # remove to 1.5 milion
-        # final_count = 1200000
-        # if (int(normalized_train_data_features.shape[0]) < 1200000):
-        #     final_count = int(normalized_train_data_features.shape[0])
-        # normalized_train_data_features = normalized_train_data_features[:final_count, :]
-        # normalized_train_data_results = normalized_train_data_results[:final_count]
 
         train_count = int((normalized_train_data_features.shape[0] * 67) / 100)
 

@@ -2,6 +2,7 @@ import os
 import io
 import numpy as np
 from random import shuffle
+from sklearn.model_selection import train_test_split
 
 
 class DataProcess:
@@ -549,7 +550,7 @@ class DataProcess:
         """
         read from data folder and return a list
         """
-        normal_limit = 560000
+        normal_limit = 540000
         normal_count = 0
 
         train_data_1 = self.read_file_lines('cicids', 'Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv')
@@ -569,10 +570,9 @@ class DataProcess:
         # shuffle(train_data_4)
         # shuffle(train_data_4)
 
-        # train_data_5 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv')
-        # train_data_5.pop(0) 
-        # shuffle(train_data_5)
-        # shuffle(train_data_5)
+        train_data_5 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv')
+        train_data_5.pop(0) 
+        shuffle(train_data_5)
 
         train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
         train_data_6.pop(0) 
@@ -587,7 +587,7 @@ class DataProcess:
         train_data_8.pop(0)
         shuffle(train_data_8)
 
-        train_data = train_data_1 + train_data_2 + train_data_3+ train_data_6+ train_data_7+ train_data_8
+        train_data = train_data_1 + train_data_2 + train_data_3+train_data_5+ train_data_6+ train_data_7+ train_data_8
 
         # train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
         
@@ -660,14 +660,8 @@ class DataProcess:
                 normalized_train_data_features[x][y] = self.normalize_value(
                     normalized_train_data_features[x][y], ymin_train[y], ymax_train[y])
 
-        train_count = int((normalized_train_data_features.shape[0] * 65) / 100)
+        train_data_features, test_data_features, train_data_results, test_data_results = train_test_split(normalized_train_data_features, normalized_train_data_results, test_size=0.35)
 
-        train_data_features = normalized_train_data_features[:train_count, :]
-        test_data_features = normalized_train_data_features[train_count:, :]
-
-        train_data_results = normalized_train_data_results[:train_count]
-        test_data_results = normalized_train_data_results[train_count:]
-        
         mul_cicids = os.path.join(
             self.get_current_working_directory(), 'data', 'mul-cicids')
         if not os.path.exists(mul_cicids):
@@ -717,7 +711,7 @@ class DataProcess:
         """
         read from data folder and return a list
         """
-        normal_limit = 560000
+        normal_limit = 540000
         normal_count = 0
 
         train_data_1 = self.read_file_lines('cicids', 'Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv')
@@ -737,10 +731,9 @@ class DataProcess:
         # shuffle(train_data_4)
         # shuffle(train_data_4)
 
-        # train_data_5 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv')
-        # train_data_5.pop(0) 
-        # shuffle(train_data_5)
-        # shuffle(train_data_5)
+        train_data_5 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv')
+        train_data_5.pop(0) 
+        shuffle(train_data_5)
 
         train_data_6 = self.read_file_lines('cicids', 'Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
         train_data_6.pop(0) 
@@ -755,7 +748,7 @@ class DataProcess:
         shuffle(train_data_8)
 
         # train_data = train_data_1 + train_data_2+ train_data_3+ train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
-        train_data = train_data_1 + train_data_2 + train_data_3+ train_data_6+ train_data_7+ train_data_8
+        train_data = train_data_1 + train_data_2 + train_data_3+ train_data_5+ train_data_6+ train_data_7+ train_data_8
 
         # extract data and shuffle it
         raw_train_data_features_extra = [self.extract_features(x) for x in train_data]
@@ -826,13 +819,8 @@ class DataProcess:
                 normalized_train_data_features[x][y] = self.normalize_value(
                     normalized_train_data_features[x][y], ymin_train[y], ymax_train[y])
 
-        train_count = int((normalized_train_data_features.shape[0] * 65) / 100)
 
-        train_data_features = normalized_train_data_features[:train_count, :]
-        test_data_features = normalized_train_data_features[train_count:, :]
-
-        train_data_results = normalized_train_data_results[:train_count]
-        test_data_results = normalized_train_data_results[train_count:]
+        train_data_features, test_data_features, train_data_results, test_data_results = train_test_split(normalized_train_data_features, normalized_train_data_results, test_size=0.35)
         
         mul_cicids = os.path.join(
             self.get_current_working_directory(), 'data', 'bin-cicids')

@@ -14,7 +14,8 @@
 6. Classic machine learning models (Naive Bayes, Ada Boost and more)
 
 ## Usage
-each model is saved in a file run. to run simply use:
+
+[NSL-KDD](https://www.unb.ca/cic/datasets/nsl.html) and [CICIDS2017](https://www.unb.ca/cic/datasets/ids-2017.html) datasets must be in the `/data/nsl` and `/data/cicids/` folders. Each model is saved in a file run. to run them, simply use:
 
 `python model_name.py`
 

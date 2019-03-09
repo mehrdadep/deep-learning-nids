@@ -15,6 +15,5 @@ try:
 except Exception as e:
     print(e)
 
-os.system('shutdown -s')
 import winsound
 winsound.PlaySound("SystemHand", winsound.SND_ALIAS)

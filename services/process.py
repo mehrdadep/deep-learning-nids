@@ -236,10 +236,6 @@ class Processor:
         ymin_test = np.amin(numericalized_test_data_features, axis=0)
         ymax_test = np.amax(numericalized_test_data_features, axis=0)
 
-        # test 21 data
-        ymin_test_21 = np.amin(numericalized_test_21_data_features, axis=0)
-        ymax_test_21 = np.amax(numericalized_test_21_data_features, axis=0)
-
         # normalize train
         for x in range(0, normalized_train_data_features.shape[0]):
             for y in range(0, normalized_train_data_features.shape[1]):
@@ -739,8 +735,6 @@ class Processor:
         train_data_8.pop(0)
         shuffle(train_data_8)
 
-        # train_data = train_data_1 + train_data_2+ train_data_3+
-        # train_data_4+ train_data_5+ train_data_6+ train_data_7+ train_data_8
         train_data = train_data_1 + train_data_2 + train_data_3 + \
                      train_data_5 + train_data_6 + train_data_7 + train_data_8
 

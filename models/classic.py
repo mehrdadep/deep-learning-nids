@@ -1,5 +1,4 @@
 import numpy as np
-from keras.utils import np_utils
 from sklearn import metrics
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -21,7 +20,6 @@ class Classic:
             run_type,
             dataset,
         )
-
 
         y_train = y_train.ravel()
         y_test = y_test.ravel()

@@ -1,6 +1,5 @@
-from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout, Conv1D, Flatten
-
+from keras.models import Sequential
 
 
 class Conv1DModel:

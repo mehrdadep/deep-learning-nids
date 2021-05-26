@@ -5,7 +5,7 @@ from keras.models import Sequential
 class Conv1DModel:
 
     @classmethod
-    def model(cls, run_type, shapes):
+    def model(cls, run_type, dataset, shapes):
         model = Sequential()
         model.add(
             Conv1D(60, kernel_size=1, activation='relu', input_shape=shapes)
@@ -21,7 +21,10 @@ class Conv1DModel:
             model.add(Dense(1))
             model.add(Activation('sigmoid'))
         else:
-            model.add(Dense(5))
+            if dataset == 0:
+                model.add(Dense(5))
+            else:
+                model.add(Dense(4))
             model.add(Activation('softmax'))
 
         return model

@@ -5,7 +5,7 @@ from keras.models import Sequential
 class GRUModel:
 
     @classmethod
-    def model(cls, run_type, shapes):
+    def model(cls, run_type, dataset, shapes):
         model = Sequential()
         model.add(GRU(120, input_shape=shapes, return_sequences=True))
         model.add(Dropout(0.2))
@@ -18,7 +18,10 @@ class GRUModel:
             model.add(Dense(1))
             model.add(Activation('hard_sigmoid'))
         else:
-            model.add(Dense(5))
+            if dataset == 0:
+                model.add(Dense(5))
+            else:
+                model.add(Dense(4))
             model.add(Activation('softmax'))
 
         return model

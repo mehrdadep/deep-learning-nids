@@ -34,26 +34,31 @@ class Runner:
         if model_type == 1:
             model = Conv1DModel.model(
                 run_type,
+                dataset,
                 (x_train.shape[1], x_train.shape[2]),
             )
         elif model_type == 2:
             model = DNNModel.model(
                 run_type,
+                dataset,
                 (x_train.shape[1], x_train.shape[2]),
             )
         elif model_type == 3:
             model = GRUModel.model(
                 run_type,
+                dataset,
                 (x_train.shape[1], x_train.shape[2]),
             )
         elif model_type == 4:
             model = LSTMModel.model(
                 run_type,
+                dataset,
                 (x_train.shape[1], x_train.shape[2]),
             )
         elif model_type == 5:
             model = RNNModel.model(
                 run_type,
+                dataset,
                 (x_train.shape[1], x_train.shape[2]),
             )
 
